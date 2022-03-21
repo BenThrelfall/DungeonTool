@@ -13,7 +13,7 @@ using System.IO;
 public class ImageUploaderTests {
 
     [UnityTest]
-    public IEnumerator ImageUploaderAndRecieverTransfer() {
+    public IEnumerator ClientToServer() {
 
         ServiceCollection serviceCollection = new ServiceCollection();
         var fileTester = new TestFileIO(1024 * 1024 * 7);
@@ -25,7 +25,7 @@ public class ImageUploaderTests {
         yield return new WaitForEndOfFrame();
 
         GameObject upObject = new GameObject();
-        var uploader = upObject.AddComponent<ImageUploader>();
+        var uploader = upObject.AddComponent<ImageSender>();
 
         GameObject recieverObject = new GameObject();
         var reciever = recieverObject.AddComponent<ImageReciever>();
@@ -39,11 +39,58 @@ public class ImageUploaderTests {
 
         yield return new WaitForSecondsRealtime(2f);
 
-        uploader.OpenAndSendImageFromFile("test");
+        uploader.OpenAndSendImageFromFile("test", true);
 
         yield return new WaitForSecondsRealtime(10f);
 
         Assert.IsTrue(fileTester.recieved);
+
+        manager.StopHost();
+
+        yield return new WaitForEndOfFrame();
+
+        GameObject.Destroy(network);
+
+    }
+
+    [UnityTest]
+    public IEnumerator ServerToClient() {
+
+        ServiceCollection serviceCollection = new ServiceCollection();
+        var fileTester = new TestFileIO(1024 * 1024 * 7);
+        serviceCollection.AddService<IImageFileIO>(fileTester);
+
+        GameObject network = new GameObject();
+        var manager = network.AddComponent<WebTestNetworkManager>();
+
+        yield return new WaitForEndOfFrame();
+
+        GameObject upObject = new GameObject();
+        var uploader = upObject.AddComponent<ImageSender>();
+
+        GameObject recieverObject = new GameObject();
+        var reciever = recieverObject.AddComponent<ImageReciever>();
+
+        uploader.SetUpDependancies(serviceCollection);
+        reciever.SetUpDependancies(serviceCollection);
+
+        yield return new WaitForEndOfFrame();
+
+        manager.StartHost();
+
+        yield return new WaitForSecondsRealtime(2f);
+
+        uploader.OpenAndSendImageFromFile("test", false);
+
+        yield return new WaitForSecondsRealtime(10f);
+
+        Assert.IsTrue(fileTester.recieved);
+
+        manager.StopHost();
+
+        yield return new WaitForEndOfFrame();
+
+        GameObject.Destroy(network);
 
     }
 

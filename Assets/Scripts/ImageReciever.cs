@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ImageUploader;
+using static ImageSender;
 
 public class ImageReciever : MonoBehaviour, IRequiresDependancy {
 
@@ -11,16 +11,34 @@ public class ImageReciever : MonoBehaviour, IRequiresDependancy {
     IImageFileIO fileIO;
 
     void Start() {
-        NetworkServer.RegisterHandler<ImagePart>(OnImage);
-        NetworkServer.RegisterHandler<ImageUploadRequest>(OnImageRequest);
+        NetworkServer.RegisterHandler<ImagePart>(OnImageServer);
+        NetworkServer.RegisterHandler<ImageUploadRequest>(OnImageRequestServer);
+
+        NetworkClient.RegisterHandler<ImagePart>(OnImage);
+        NetworkClient.RegisterHandler<ImageUploadRequest>(OnImageRequest);
     }
 
-    private void OnImageRequest(NetworkConnectionToClient client, ImageUploadRequest request) {
+    private void OnImageRequest(ImageUploadRequest request) {
+        AllocateImageInMemory(request);
+    }
+
+    private void OnImage(ImagePart image) {
+        ProcessImage(image);
+    }
+
+    private void OnImageRequestServer(NetworkConnectionToClient client, ImageUploadRequest request) {
+        AllocateImageInMemory(request);
+    }
+
+    private void AllocateImageInMemory(ImageUploadRequest request) {
         images.Add(request.hash, new byte[request.totalSize]);
     }
 
-    private void OnImage(NetworkConnectionToClient client, ImagePart image) {
+    private void OnImageServer(NetworkConnectionToClient client, ImagePart image) {
+        ProcessImage(image);
+    }
 
+    private void ProcessImage(ImagePart image) {
         IList<byte> list = image.data;
 
         for (int i = 0; i < list.Count; i++) {
@@ -31,7 +49,6 @@ public class ImageReciever : MonoBehaviour, IRequiresDependancy {
                 return;
             }
         }
-
     }
 
     private void UploadComplete(string hash) {

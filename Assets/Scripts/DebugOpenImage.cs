@@ -8,7 +8,7 @@ public class DebugOpenImage : MonoBehaviour {
     string filePath;
 
     [SerializeField]
-    ImageUploader uploader;
+    ImageSender uploader;
 
     void OnGUI() {
         GUILayout.BeginArea(new Rect(500, 200, 215, 9999));
@@ -16,7 +16,7 @@ public class DebugOpenImage : MonoBehaviour {
         filePath = GUILayout.TextField(filePath);
 
         if (GUILayout.Button("Open File")) {
-            uploader.OpenAndSendImageFromFile(filePath);
+            uploader.OpenAndSendImageFromFile(filePath, true);
         }
 
         GUILayout.EndArea();
