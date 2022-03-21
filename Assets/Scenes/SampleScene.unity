@@ -152,7 +152,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &80045811
 MonoBehaviour:
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 248407496}
   - component: {fileID: 248407495}
   m_Layer: 0
-  m_Name: Image Opener
+  m_Name: DEBUG Image Opener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -238,7 +238,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &305499402
 GameObject:
@@ -561,7 +561,7 @@ GameObject:
   - component: {fileID: 840355601}
   - component: {fileID: 840355603}
   m_Layer: 0
-  m_Name: Token Spawner
+  m_Name: DEBUG Token Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
