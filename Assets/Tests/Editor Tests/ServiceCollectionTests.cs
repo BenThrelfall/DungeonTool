@@ -47,4 +47,7 @@ public class ServiceCollectionTests {
 
     }
 
+    interface IImageFileIO { }
+    class ImageFileIO : IImageFileIO { }
+
 }

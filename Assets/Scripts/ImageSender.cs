@@ -5,12 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ImageSender : MonoBehaviour, IRequiresDependancy {
+public class ImageSender : MonoBehaviour, IRequiresDependancy, IImageSender {
 
     const int BUFFERSIZE = 14384;
-
-    IImageFileIO fileIO;
-
 
     public struct ImagePart : NetworkMessage {
         public string hash;
@@ -23,30 +20,23 @@ public class ImageSender : MonoBehaviour, IRequiresDependancy {
         public int totalSize;
     }
 
-    /// <summary>
-    /// Opens an image from a file and sends it across the network
-    /// </summary>
-    /// <param name="fileName">File to be opened</param>
-    /// <param name="sendToServer">Indicates if the image should be sent to the server or from the server to all clients</param>
-    public void OpenAndSendImageFromFile(string fileName, bool sendToServer) {
-        var data = fileIO.ReadAllImageBytes(fileName);
-        if (sendToServer) {
-            StartCoroutine(SendImageToServer(data));
-        }
-        else {
-            StartCoroutine(SendImageToClient(data));
-        }
+
+    public void SendToServer(byte[] imageData, string hash) {
+        StartCoroutine(SendImageToServer(imageData, hash));
     }
 
-    IEnumerator SendImageToClient(byte[] data) {
-        var hash = GetHashSHA1(data);
+    public void SendToAllClients(byte[] imageData, string hash) {
+        StartCoroutine(SendImageToClient(imageData, hash)); 
+    }
+
+    IEnumerator SendImageToClient(byte[] data, string hash) {
 
         var imageRequest = new ImageUploadRequest {
             hash = hash,
             totalSize = data.Length,
         };
 
-        NetworkClient.Send(imageRequest);
+        NetworkServer.SendToAll(imageRequest);
 
         for (int i = 0; i < data.Length; i += BUFFERSIZE) {
             yield return null;
@@ -56,8 +46,7 @@ public class ImageSender : MonoBehaviour, IRequiresDependancy {
         }
     }
 
-    IEnumerator SendImageToServer(byte[] data) {
-        var hash = GetHashSHA1(data);
+    IEnumerator SendImageToServer(byte[] data, string hash) {
 
         var imageRequest = new ImageUploadRequest {
             hash = hash,
@@ -74,13 +63,6 @@ public class ImageSender : MonoBehaviour, IRequiresDependancy {
         }
     }
 
-    static string GetHashSHA1(byte[] data) {
-        using (var sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider()) {
-            return string.Concat(sha1.ComputeHash(data).Select(x => x.ToString("X2")));
-        }
-    }
-
     public void SetUpDependancies(ServiceCollection serviceCollection) {
-        fileIO = serviceCollection.GetService<IImageFileIO>();
     }
 }

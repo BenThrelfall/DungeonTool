@@ -5,7 +5,11 @@ using UnityEngine;
 
 public class DependancyInjector : MonoBehaviour {
 
+    [SerializeField]
+    ImageSender sender;
 
+    [SerializeField]
+    ImageReciever reciever;
 
     private void Start() {
         var serviceProvider = MakeServiceProvider();
@@ -21,7 +25,8 @@ public class DependancyInjector : MonoBehaviour {
     private ServiceCollection MakeServiceProvider() {
         ServiceCollection services = new ServiceCollection();
 
-        services.AddService<IImageFileIO>(new ImageFileIO());
+        services.AddService<IImageReciever>(reciever);
+        services.AddService<IImageSender>(sender);
 
         return services;
 
