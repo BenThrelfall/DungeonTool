@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,23 @@ public class DependancyInjector : MonoBehaviour {
     [SerializeField]
     ImageReciever reciever;
 
+    [SerializeField]
+    SpriteCollection spriteCollection;
+
+    public static DependancyInjector instance;
+    public ServiceCollection Services { get; set; }
+
     private void Start() {
-        var serviceProvider = MakeServiceProvider();
+
+        if (instance != null) throw new Exception("A dependancy injector already exists");
+        instance = this;
+
+        Services = MakeServiceProvider();
 
         var objects = FindObjectsOfType<MonoBehaviour>().OfType<IRequiresDependancy>();
 
         foreach (var obj in objects) {
-            obj.SetUpDependancies(serviceProvider);
+            obj.SetUpDependancies(Services);
         }
 
     }
@@ -27,6 +38,7 @@ public class DependancyInjector : MonoBehaviour {
 
         services.AddService<IImageReciever>(reciever);
         services.AddService<IImageSender>(sender);
+        services.AddService<ISpriteCollection>(spriteCollection);
 
         return services;
 

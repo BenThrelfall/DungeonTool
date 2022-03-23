@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteCollection : MonoBehaviour, IRequiresDependancy {
+public class SpriteCollection : MonoBehaviour, ISpriteCollection, IRequiresDependancy {
 
     IImageSender sender;
     IImageReciever reciever;
