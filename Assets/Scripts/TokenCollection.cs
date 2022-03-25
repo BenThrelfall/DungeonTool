@@ -23,6 +23,8 @@ public class TokenCollection : MonoBehaviour, IRequiresDependancy {
         var token = Instantiate(tokenPrefab, tokenUI.transform);
         var runtimeSprite = token.GetComponent<LocalRuntimeSprite>();
         runtimeSprite.SetSpriteHash(hash);
+        var button = token.GetComponent<UIAddTokenToBoardButton>();
+        button.tokenHash = hash;
 
     }
 

@@ -38,6 +38,10 @@ public class LocalRuntimeSprite : MonoBehaviour, IRequiresDependancy {
 
     IEnumerator WaitAndUpdateSprite() {
 
+        while (spriteCollection == null) {
+            yield return null;
+        }
+
         Sprite sprite = spriteCollection.GetSprite(targetHash);
 
         while (sprite == null) {

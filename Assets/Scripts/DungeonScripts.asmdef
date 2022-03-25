@@ -2,7 +2,8 @@
     "name": "DungeonScripts",
     "rootNamespace": "",
     "references": [
-        "GUID:30817c1a0e6d646d99c048fc403f5979"
+        "GUID:30817c1a0e6d646d99c048fc403f5979",
+        "GUID:c685d05731421f64287ad6d13be5af0e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

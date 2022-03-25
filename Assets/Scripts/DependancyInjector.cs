@@ -15,6 +15,15 @@ public class DependancyInjector : MonoBehaviour {
     [SerializeField]
     SpriteCollection spriteCollection;
 
+    [SerializeField]
+    ObjectSpawner spawner;
+
+    [SerializeField]
+    FileIOService fileIOService;
+
+    [SerializeField]
+    MapUpdater mapUpdater;
+
     public static DependancyInjector instance;
     public ServiceCollection Services { get; set; }
 
@@ -39,6 +48,9 @@ public class DependancyInjector : MonoBehaviour {
         services.AddService<IImageReciever>(reciever);
         services.AddService<IImageSender>(sender);
         services.AddService<ISpriteCollection>(spriteCollection);
+        services.AddService<IObjectSpawner>(spawner);
+        services.AddService<IFileIOService>(fileIOService);
+        services.AddService<IMapUpdater>(mapUpdater);
 
         return services;
 

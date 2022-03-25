@@ -13,7 +13,7 @@ public class MapsCollection : MonoBehaviour, IRequiresDependancy {
     ISpriteCollection spriteCollection;
     List<string> maps = new List<string>();
 
-    public void AddToken(byte[] data) {
+    public void AddMap(byte[] data) {
 
         string hash = data.GetHashSHA1();
 
@@ -23,6 +23,8 @@ public class MapsCollection : MonoBehaviour, IRequiresDependancy {
         var token = Instantiate(mapPrefab, mapUI.transform);
         var runtimeSprite = token.GetComponent<LocalRuntimeSprite>();
         runtimeSprite.SetSpriteHash(hash);
+        var button = token.GetComponent<UIChangeMapButton>();
+        button.boardHash = hash;
 
     }
 
