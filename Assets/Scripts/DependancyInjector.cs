@@ -24,6 +24,9 @@ public class DependancyInjector : MonoBehaviour {
     [SerializeField]
     MapUpdater mapUpdater;
 
+    [SerializeField]
+    FrameRateLimiter rateLimiter;
+
     public static DependancyInjector instance;
     public ServiceCollection Services { get; set; }
 
@@ -51,6 +54,7 @@ public class DependancyInjector : MonoBehaviour {
         services.AddService<IObjectSpawner>(spawner);
         services.AddService<IFileIOService>(fileIOService);
         services.AddService<IMapUpdater>(mapUpdater);
+        services.AddService<IFrameRateLimiter>(rateLimiter);
 
         return services;
 
