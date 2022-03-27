@@ -24,6 +24,9 @@ public class DependancyInjector : MonoBehaviour {
     [SerializeField]
     ImageDataCollection imageDataCollection;
 
+    [SerializeField]
+    ToolManager toolManager;
+
     public static DependancyInjector instance;
     public ServiceCollection Services { get; set; }
 
@@ -51,6 +54,7 @@ public class DependancyInjector : MonoBehaviour {
         services.AddService<IFileIOService>(fileIOService);
         services.AddService<IMapUpdater>(mapUpdater);
         services.AddService<IFrameRateLimiter>(rateLimiter);
+        services.AddService<IToolManager>(toolManager);
 
         return services;
 
