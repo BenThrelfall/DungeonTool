@@ -7,12 +7,6 @@ using UnityEngine;
 public class DependancyInjector : MonoBehaviour {
 
     [SerializeField]
-    ImageSender sender;
-
-    [SerializeField]
-    ImageReciever reciever;
-
-    [SerializeField]
     SpriteCollection spriteCollection;
 
     [SerializeField]
@@ -26,6 +20,9 @@ public class DependancyInjector : MonoBehaviour {
 
     [SerializeField]
     FrameRateLimiter rateLimiter;
+
+    [SerializeField]
+    ImageDataCollection imageDataCollection;
 
     public static DependancyInjector instance;
     public ServiceCollection Services { get; set; }
@@ -48,8 +45,7 @@ public class DependancyInjector : MonoBehaviour {
     private ServiceCollection MakeServiceProvider() {
         ServiceCollection services = new ServiceCollection();
 
-        services.AddService<IImageReciever>(reciever);
-        services.AddService<IImageSender>(sender);
+        services.AddService<IImageDataCollection>(imageDataCollection);
         services.AddService<ISpriteCollection>(spriteCollection);
         services.AddService<IObjectSpawner>(spawner);
         services.AddService<IFileIOService>(fileIOService);

@@ -4,47 +4,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteCollection : MonoBehaviour, ISpriteCollection, IRequiresDependancy {
+public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDependancy {
 
-    IImageSender sender;
-    IImageReciever reciever;
+    IImageDataCollection imageCollection;
 
     Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
 
-    public struct NetworkSprite : NetworkMessage {
-        public string hash;
-        public int pixelsPerUnit;
+    public readonly struct NetworkSprite : IEquatable<NetworkSprite> {
+        public readonly string hash;
+        public readonly float pixelsPerUnit;
+
+        public NetworkSprite(string hash, float pixelsPerUnit) {
+            this.hash = hash;
+            this.pixelsPerUnit = pixelsPerUnit;
+        }
+
+        public bool Equals(NetworkSprite other) {
+            return hash == other.hash && pixelsPerUnit == other.pixelsPerUnit;
+        }
+    }
+
+    public override void OnStartClient() {
+        base.OnStartClient();
+        CmdSyncToNewClient();
     }
 
     private void Start() {
-        NetworkServer.RegisterHandler<NetworkSprite>(ServerOnNetworkSprite);
-
-        NetworkClient.RegisterHandler<NetworkSprite>(ClientOnNetworkSprite);
+        SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    [ClientRpc]
     private void ClientOnNetworkSprite(NetworkSprite data) {
         if (sprites.ContainsKey(data.hash)) return;
         StartCoroutine(HandleSpriteRecival(data, false));
     }
 
-    private void ServerOnNetworkSprite(NetworkConnectionToClient client, NetworkSprite data) {
+    [Command(requiresAuthority = false)]
+    private void ServerOnNetworkSprite(NetworkSprite data) {
         StartCoroutine(HandleSpriteRecival(data, true));
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdSyncToNewClient() {
+
+        foreach (var spritePair in sprites) {
+            byte[] data = imageCollection.GetImage(spritePair.Key);
+            ClientOnNetworkSprite(new NetworkSprite(spritePair.Key, spritePair.Value.pixelsPerUnit));
+        }
+
     }
 
     IEnumerator HandleSpriteRecival(NetworkSprite data, bool isServer) {
 
-        byte[] imageData = reciever.GetImage(data.hash);
+        byte[] imageData = imageCollection.GetImage(data.hash);
 
         while (imageData == null) {
             yield return new WaitForSecondsRealtime(1f);
-            imageData = reciever.GetImage(data.hash);
+            imageData = imageCollection.GetImage(data.hash);
         }
 
         AddSpriteLocally(imageData, data.hash, data.pixelsPerUnit);
 
         if (isServer) {
-            NetworkServer.SendToAll(data);
-            sender.SendToAllClients(imageData, data.hash);
+            ClientOnNetworkSprite(data);
         }
 
     }
@@ -60,12 +82,12 @@ public class SpriteCollection : MonoBehaviour, ISpriteCollection, IRequiresDepen
 
         AddSpriteLocally(imageData, hash, pixelsPerUnit);
 
-        NetworkClient.Send(new NetworkSprite { hash = hash, pixelsPerUnit = pixelsPerUnit });
-        sender.SendToServer(imageData, hash);
+        ServerOnNetworkSprite(new NetworkSprite(hash, pixelsPerUnit));
+        imageCollection.AddImage(imageData, hash);
 
     }
 
-    private void AddSpriteLocally(byte[] imageData, string hash, int pixelsPerUnit) {
+    private void AddSpriteLocally(byte[] imageData, string hash, float pixelsPerUnit) {
         if (sprites.ContainsKey(hash)) return;
 
         Texture2D texture2D = CreateTexture(imageData);
@@ -85,7 +107,6 @@ public class SpriteCollection : MonoBehaviour, ISpriteCollection, IRequiresDepen
     }
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
-        sender = serviceCollection.GetService<IImageSender>();
-        reciever = serviceCollection.GetService<IImageReciever>();
+        imageCollection = serviceCollection.GetService<IImageDataCollection>();
     }
 }
