@@ -18,7 +18,7 @@ public class MapsCollection : MonoBehaviour, IRequiresDependancy {
         string hash = data.GetHashSHA1();
 
         maps.Add(hash);
-        spriteCollection.AddSprite(data, hash, 100);
+        spriteCollection.AddSprite(data, hash);
 
         var token = Instantiate(mapPrefab, mapUI.transform);
         var runtimeSprite = token.GetComponent<LocalRuntimeSprite>();

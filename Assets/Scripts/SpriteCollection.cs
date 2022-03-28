@@ -12,15 +12,13 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
 
     public readonly struct NetworkSprite : IEquatable<NetworkSprite> {
         public readonly string hash;
-        public readonly float pixelsPerUnit;
 
-        public NetworkSprite(string hash, float pixelsPerUnit) {
+        public NetworkSprite(string hash) {
             this.hash = hash;
-            this.pixelsPerUnit = pixelsPerUnit;
         }
 
         public bool Equals(NetworkSprite other) {
-            return hash == other.hash && pixelsPerUnit == other.pixelsPerUnit;
+            return hash == other.hash;
         }
     }
 
@@ -49,7 +47,7 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
 
         foreach (var spritePair in sprites) {
             byte[] data = imageCollection.GetImage(spritePair.Key);
-            ClientOnNetworkSprite(new NetworkSprite(spritePair.Key, spritePair.Value.pixelsPerUnit));
+            ClientOnNetworkSprite(new NetworkSprite(spritePair.Key));
         }
 
     }
@@ -63,7 +61,7 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
             imageData = imageCollection.GetImage(data.hash);
         }
 
-        AddSpriteLocally(imageData, data.hash, data.pixelsPerUnit);
+        AddSpriteLocally(imageData, data.hash);
 
         if (isServer) {
             ClientOnNetworkSprite(data);
@@ -76,21 +74,22 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
         return sprites[hash];
     }
 
-    public void AddSprite(byte[] imageData, string hash, int pixelsPerUnit) {
+    public void AddSprite(byte[] imageData, string hash) {
 
         if (sprites.ContainsKey(hash)) return;
 
-        AddSpriteLocally(imageData, hash, pixelsPerUnit);
+        AddSpriteLocally(imageData, hash);
 
-        ServerOnNetworkSprite(new NetworkSprite(hash, pixelsPerUnit));
+        ServerOnNetworkSprite(new NetworkSprite(hash));
         imageCollection.AddImage(imageData, hash);
 
     }
 
-    private void AddSpriteLocally(byte[] imageData, string hash, float pixelsPerUnit) {
+    private void AddSpriteLocally(byte[] imageData, string hash) {
         if (sprites.ContainsKey(hash)) return;
 
         Texture2D texture2D = CreateTexture(imageData);
+        var pixelsPerUnit = (texture2D.width > texture2D.height ? texture2D.width : texture2D.height);
         Sprite sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
         sprites.Add(hash, sprite);
     }

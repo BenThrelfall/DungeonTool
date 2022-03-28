@@ -18,7 +18,7 @@ public class TokenCollection : MonoBehaviour, IRequiresDependancy {
         string hash = data.GetHashSHA1();
 
         tokens.Add(hash);
-        spriteCollection.AddSprite(data, hash, 100);
+        spriteCollection.AddSprite(data, hash);
 
         var token = Instantiate(tokenPrefab, tokenUI.transform);
         var runtimeSprite = token.GetComponent<LocalRuntimeSprite>();

@@ -18,7 +18,7 @@ public class DebugOpenImage : MonoBehaviour {
 
         if (GUILayout.Button("Open File")) {
             var data = File.ReadAllBytes(filePath);
-            spriteCollection.AddSprite(data, data.GetHashSHA1(), 100);
+            spriteCollection.AddSprite(data, data.GetHashSHA1());
         }
 
         GUILayout.EndArea();

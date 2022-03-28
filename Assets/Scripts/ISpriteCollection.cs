@@ -5,6 +5,6 @@ using UnityEngine;
 public interface ISpriteCollection {
 
     Sprite GetSprite(string hash);
-    void AddSprite(byte[] imageData, string hash, int pixelsPerUnit);
+    void AddSprite(byte[] imageData, string hash);
 
 }
