@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public enum DungTool {
 }
 
 public interface IToolManager {
+
+    event Action<DungTool> ToolChanged;
 
     void SwitchToTool(DungTool tool);
     void DisableAllTools();

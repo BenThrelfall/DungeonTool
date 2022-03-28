@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class ToolManager : NetworkBehaviour, IToolManager {
 
     [SerializeField]
     GameObject rulerTool;
+
+    public event Action<DungTool> ToolChanged;
 
     public override void OnStartClient() {
         DisableAllTools();
@@ -58,6 +61,8 @@ public class ToolManager : NetworkBehaviour, IToolManager {
                 item.Value.SetActive(false);
             }
         }
+
+        ToolChanged?.Invoke(tool);
 
     }
 }
