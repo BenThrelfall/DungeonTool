@@ -8,19 +8,31 @@ using UnityEngine;
 /// </summary>
 public class PermTools : MonoBehaviour, IRequiresDependancy {
 
-    //Camera Drag
-    [SerializeField]
-    Transform cameraTransform;
-
     [SerializeField]
     Camera mainCamera;
 
+    //Camera Drag
+    [SerializeField]
+    Transform cameraTransform;
     Vector2 mouseStartPoint;
+
+    //Camera Zoom
+    [SerializeField]
+    float zoomSensitivity;
+    [SerializeField]
+    float minZoom;
+    [SerializeField]
+    float maxZoom;
 
     IFrameRateLimiter limiter;
 
     private void Update() {
         CameraDragInputs();
+        CameraZoomInputs();
+    }
+
+    private void CameraZoomInputs() {
+        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize - Input.GetAxis("Mouse ScrollWheel") * zoomSensitivity, minZoom, maxZoom);
     }
 
     private void CameraDragInputs() {
