@@ -57,6 +57,23 @@ public class SelectTool : MonoBehaviour {
             DeselectAll();
         }
 
+        if (Input.GetKeyDown(KeyCode.Minus)) {
+            foreach (var item in selectedObjects) {
+                if (item.ObjectBounds.size.x == 1) continue;
+                item.DragPosition(-Vector2.one * 0.5f);
+                item.Resize(item.ObjectBounds.size - Vector3.one);
+                item.Move();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Equals)) {
+            foreach (var item in selectedObjects) {
+                item.DragPosition(Vector2.one * 0.5f);
+                item.Resize(item.ObjectBounds.size + Vector3.one);
+                item.Move();
+            }
+        }
+
         if (Input.GetMouseButtonUp(0)) {
             mode = SelectMode.None;
         }
