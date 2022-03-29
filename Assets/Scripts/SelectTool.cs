@@ -24,6 +24,10 @@ public class SelectTool : MonoBehaviour {
     SpriteRenderer selectRenderer;
     Bounds selectionBounds;
 
+    [SerializeField]
+    GameObject dragArea;
+    SpriteRenderer dragRenderer;
+
     const float dragThreshold = 0.2f;
 
     Vector2 startPoint;
@@ -37,6 +41,7 @@ public class SelectTool : MonoBehaviour {
 
     private void Start() {
         selectRenderer = selectObject.GetComponent<SpriteRenderer>();
+        dragRenderer = dragArea.GetComponent<SpriteRenderer>();
         DeselectAll();
     }
 
@@ -76,6 +81,7 @@ public class SelectTool : MonoBehaviour {
 
         if (Input.GetMouseButtonUp(0)) {
             mode = SelectMode.None;
+            dragArea.SetActive(false);
         }
     }
 
@@ -127,7 +133,7 @@ public class SelectTool : MonoBehaviour {
     private void EmptySpaceInputs() {
 
         if (!(mode == SelectMode.Selecting) && !(mode == SelectMode.None)) return;
-        if (selectionBounds.Contains(MousePos())) return;
+        if (!(mode == SelectMode.Selecting) && selectionBounds.Contains(MousePos())) return;
 
         if (Input.GetMouseButtonDown(0)) {
             mode = SelectMode.Selecting;
@@ -147,6 +153,9 @@ public class SelectTool : MonoBehaviour {
             diag = startPoint - MousePos();
 
             if (diag.sqrMagnitude > dragThreshold) {
+                dragArea.SetActive(true);
+                dragArea.transform.position = startPoint - diag * 0.5f;
+                dragRenderer.size = diag;
                 List<Collider2D> selected = new List<Collider2D>();
                 Physics2D.OverlapArea(startPoint, MousePos(), new ContactFilter2D() { layerMask = layerMask }, selected);
 
