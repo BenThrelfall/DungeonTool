@@ -56,7 +56,7 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
 
     public void Resize(Vector2 newSize) {
         transform.localScale = newSize;
-
+        CmdResize(newSize);
     }
 
     [Command(requiresAuthority = false)]
