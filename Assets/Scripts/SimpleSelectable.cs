@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Behavour designed to go on most selectable objects on the board
+/// Marks objects as being an <c>ISelectable</c> and implements the
+/// interface methods in a simple way. Syncs changes made to itself
+/// across the network.
+/// </summary>
 public class SimpleSelectable : NetworkBehaviour, ISelectable {
     public Bounds ObjectBounds => col.bounds;
 

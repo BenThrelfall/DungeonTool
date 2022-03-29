@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+/// <summary>
+/// Behavour that goes on the UI element that prompts
+/// a user to add a map from the file system.
+/// </summary>
 public class UIAddMapButton : MonoBehaviour, IRequiresDependancy {
 
     [SerializeField]
@@ -10,6 +14,10 @@ public class UIAddMapButton : MonoBehaviour, IRequiresDependancy {
 
     IFileIOService fileIOService;
 
+    /// <summary>
+    /// Prompts a user to choose a file from the file system then sends
+    /// the bytes from that file to the map collection to be added as a new map.
+    /// </summary>
     public void OnClick() {
 
         fileIOService.ReadAllBytes((x) => mapCollection.AddMap(x));

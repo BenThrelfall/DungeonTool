@@ -3,8 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Behavour that goes on each UI element that adds tokens to the board.
+/// Each behavour instance has a specific sprite that will be used for the 
+/// token that it spawns assigned.
+/// </summary>
 public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
 
+    /// <summary>
+    /// Hash of the sprite that will be used for the token when it is spawned
+    /// </summary>
     public string tokenHash;
 
     IObjectSpawner spawner;
@@ -16,6 +24,10 @@ public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
         if (dontAutoDependancies == false) SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    /// <summary>
+    /// Spawn a token in the centre of the board. Give it the sprite 
+    /// assigned to this behavour instance.
+    /// </summary>
     public void OnClick() {
         spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash);
     }

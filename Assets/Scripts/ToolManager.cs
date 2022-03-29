@@ -4,6 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of <c>IToolManager</c>
+/// Uses GameObjects as the tool instances 
+/// and calles set active on the GameObjects 
+/// to enable or disable them.
+/// </summary>
 public class ToolManager : NetworkBehaviour, IToolManager {
 
     Dictionary<DungTool, GameObject> tools = new Dictionary<DungTool, GameObject>();

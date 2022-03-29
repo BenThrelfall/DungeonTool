@@ -4,6 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of <c>ISpriteCollection</c>
+/// Uses commands and RPCs to sync sprites across the network
+/// </summary>
 public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDependancy {
 
     IImageDataCollection imageCollection;

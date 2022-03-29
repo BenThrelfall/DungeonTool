@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Behavour updates the sprite on its GameObject based on the provided sprite hash.
+/// Will also sync the hash across the network so that all instances on the network will
+/// recieve the same sprite
+/// </summary>
 public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
 
     ISpriteCollection spriteCollection;
@@ -29,6 +34,11 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
         if (dontAutoDependancies == false) SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    /// <summary>
+    /// Set the <c>targetHash</c> for this instance which determines what 
+    /// sprite will be set for the instances GameObject.
+    /// </summary>
+    /// <param name="hash">Hash of the target sprite</param>
     [Command(requiresAuthority = false)]
     public void SetHash(string hash) {
         targetHash = hash;
