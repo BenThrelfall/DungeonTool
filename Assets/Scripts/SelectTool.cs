@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Tool for selecting board elements and acting upon selected elements
+/// </summary>
 public class SelectTool : MonoBehaviour {
 
     private enum SelectMode {
@@ -52,6 +55,9 @@ public class SelectTool : MonoBehaviour {
         RegularInputs();
     }
 
+    /// <summary>
+    /// Inputs that are tested unconditionally
+    /// </summary>
     private void RegularInputs() {
         
         if (Input.GetKeyDown(KeyCode.Delete)) {
@@ -85,6 +91,10 @@ public class SelectTool : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Inputs that are only tested if the mouse is over the selected area or
+    /// if the tool is in Moving mode and not in any other mode except None
+    /// </summary>
     private void SelectedAreaInputs() {
 
         if (!(mode == SelectMode.Moving) && !(mode == SelectMode.None)) return;
@@ -171,6 +181,12 @@ public class SelectTool : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Adds an item to the selected objects collection and updates
+    /// the selected area bounds and the object that visually shows 
+    /// the selected area. Will deselect objects if ctrl is being pressed.
+    /// </summary>
+    /// <param name="selectable"></param>
     private void Select(ISelectable selectable) {
 
         if (selectedObjects.Contains(selectable)) {
@@ -192,6 +208,12 @@ public class SelectTool : MonoBehaviour {
         selectRenderer.size = new Vector2(selectionBounds.size.x, selectionBounds.size.y);
     }
 
+    /// <summary>
+    /// Removes an object from the selected objects and 
+    /// recalculates the bounds updaing the bounds and the 
+    /// visual display object
+    /// </summary>
+    /// <param name="selectable"></param>
     void Deselect(ISelectable selectable) {
         selectedObjects.Remove(selectable);
 
@@ -200,6 +222,10 @@ public class SelectTool : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Recalculate bounds from scratch and update
+    /// the visual display object
+    /// </summary>
     private void RecalculateBounds() {
         if (selectedObjects.Count == 0) return;
         selectionBounds.extents = Vector3.zero;

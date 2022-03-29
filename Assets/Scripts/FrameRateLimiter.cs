@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of <c>IFrameRateLimiter</c>
+/// Switches between a set constant low fps if there are no 
+/// activities ongoing to an unlimited high fps if there is 
+/// at least one activity ongoing
+/// </summary>
 public class FrameRateLimiter : MonoBehaviour, IFrameRateLimiter {
 
     int activityOccuring = 0;

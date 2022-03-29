@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a pointer tool that can be used to indicate things on the board
+/// </summary>
 public class PointerTool : NetworkBehaviour, IRequiresDependancy {
 
     [SerializeField]

@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Collection of maps that are available locally. When a map is added it's added to the sprite collection
+/// so it's sprite can be synced across the network
+/// </summary>
+/// <remarks>
+/// The actual collection part of the map collection is unused. At the moment it just acts as a middle man 
+/// for adding maps to the UI and sprite collection
+/// </remarks>
 public class MapsCollection : MonoBehaviour, IRequiresDependancy {
 
     [SerializeField]

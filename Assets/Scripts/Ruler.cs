@@ -4,6 +4,11 @@ using UnityEngine;
 using TMPro;
 using Mirror;
 
+/// <summary>
+/// Behavour for the ruler object created by the <c>RulerTool</c>.
+/// Has a public method for updating the rulers position and then 
+/// calculates new values and syncs across the server.
+/// </summary>
 public class Ruler : NetworkBehaviour {
 
     [SerializeField]

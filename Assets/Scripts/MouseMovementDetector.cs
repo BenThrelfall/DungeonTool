@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A component in the frame rate limiting / activity system that starts an activity based on mouse movement
+/// </summary>
 public class MouseMovementDetector : MonoBehaviour, IRequiresDependancy {
 
     IFrameRateLimiter frameRateLimiter;

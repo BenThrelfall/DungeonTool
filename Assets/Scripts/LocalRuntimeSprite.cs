@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Sets the sprite on a gameObject based on a hash provided at runtime.
+/// Does not sync the sprite or hash on the network
 /// </summary>
 public class LocalRuntimeSprite : MonoBehaviour, IRequiresDependancy {
 
@@ -31,6 +32,11 @@ public class LocalRuntimeSprite : MonoBehaviour, IRequiresDependancy {
         if (dontAutoDependancies == false) SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    /// <summary>
+    /// Sets the target sprite hash. The sprite on this components game object
+    /// will be updated to the sprite of the target hash stored in the Sprite Collection
+    /// </summary>
+    /// <param name="hash">Target hash for the sprite</param>
     public void SetSpriteHash(string hash) {
         targetHash = hash;
         StartCoroutine(WaitAndUpdateSprite());

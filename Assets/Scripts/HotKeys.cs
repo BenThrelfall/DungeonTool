@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Checks for hotkey inputs and changes the currenlty selected tool appropriatly
+/// </summary>
 public class HotKeys : MonoBehaviour, IRequiresDependancy {
 
     IToolManager toolManager;

@@ -7,6 +7,9 @@ using System.Linq;
 using System.IO;
 using static SimpleFileBrowser.FileBrowser;
 
+/// <summary>
+/// Implementation of <c>IFileIOService</c> that uses <c>SimpleFileBrowser</c>
+/// </summary>
 public class FileIOService : MonoBehaviour, IFileIOService {
 
     public void ReadAllBytes(Action<byte[]> action) {

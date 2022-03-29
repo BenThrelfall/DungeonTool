@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Spawns a ruler for measuring distance.
+/// </summary>
 public class RulerTool : NetworkBehaviour {
 
     public GameObject rulerObject;
@@ -17,6 +20,9 @@ public class RulerTool : NetworkBehaviour {
         if (mainCamera == null) mainCamera = Camera.main;
     }
 
+    /// <summary>
+    /// Main method
+    /// </summary>
     public void PlaceRulerTool() {
         if (Input.GetMouseButtonDown(0)) {
             Vector2 rawStartPoint = (Vector2)mainCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -25,6 +31,13 @@ public class RulerTool : NetworkBehaviour {
         }
     }
 
+    /// <summary>
+    /// Updates the position of the ruler while the mouse button is being held then calls
+    /// the command to destroy the ruler when the button is released.
+    /// </summary>
+    /// <param name="startPoint">Location being measured from</param>
+    /// <param name="ruler">Reference to the ruler object</param>
+    /// <returns></returns>
     IEnumerator PlaceRuler(Vector2 startPoint, GameObject ruler) {
 
         Vector2 rawCurrentPos;

@@ -4,9 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Implementation of <c>IImageDataCollection</c>
+/// Holds the raw data of the images used for sprites
+/// Syncs using RPCs and Commands
+/// </summary>
 public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
 
     Dictionary<string, RecievedImage> imageDatas = new Dictionary<string, RecievedImage>();
+
+    /// <summary>
+    /// Number of bytes to send to the server or client in a single 
+    /// function call
+    /// </summary>
+    /// <remarks>
+    /// Required because there is a packet size limit on 
+    /// the Networkmanager
+    /// </remarks>
     const int BUFFERSIZE = 14384;
 
     public override void OnStartClient() {
@@ -14,6 +28,11 @@ public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
         CmdSyncToNewClient();
     }
 
+    /// <summary>
+    /// Called from the client on the server when the client joins.
+    /// Syncs the images currently on the server with the new client
+    /// </summary>
+    /// <param name="conn">Connection to the requesting client (auto-fills)</param>
     [Command(requiresAuthority = false)]
     private void CmdSyncToNewClient(NetworkConnectionToClient conn = null) {
         foreach (var pair in imageDatas) {
@@ -40,6 +59,11 @@ public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
         return imageDatas[hash].Data;
     }
 
+    /// <summary>
+    /// Coroutine that runs through an array of image data and sends it to the server in chunks
+    /// </summary>
+    /// <param name="imageData">Image data to be transfered to server</param>
+    /// <param name="hash">Hash of the image data</param>
     IEnumerator TransferImageDataToServer(byte[] imageData, string hash) {
 
         CmdImageTransferRequest(imageData.Length, hash);
@@ -52,6 +76,11 @@ public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
 
     }
 
+    /// <summary>
+    /// Coroutine that runs through an array of image data and sends it to all clients in chunks
+    /// </summary>
+    /// <param name="imageData">Image data to be sent to the clients</param>
+    /// <param name="hash">Hash of the image data</param>
     IEnumerator TransferImageDataToClients(byte[] imageData, string hash) {
         RpcImageTransferRequest(imageData.Length, hash);
 
@@ -62,6 +91,12 @@ public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
         }
     }
 
+    /// <summary>
+    /// Coroutine that runs through an array of image data and sends it to a specific client in chunks
+    /// </summary>
+    /// <param name="target">Client to send data to</param>
+    /// <param name="imageData">Data to be sent to the client</param>
+    /// <param name="hash">Hash of the image data</param>
     IEnumerator TransferImageDataToClient(NetworkConnection target, byte[] imageData, string hash) {
         TargetImageTransferRequest(target, imageData.Length, hash);
 
@@ -140,6 +175,9 @@ public class ImageDataCollection : NetworkBehaviour, IImageDataCollection {
 
     }
 
+    /// <summary>
+    /// Simple class for having a <c>Compete</c> flag together with image data
+    /// </summary>
     private class RecievedImage {
         public bool Complete { get; set; } = false;
         public byte[] Data { get; private set; }

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using static IObjectSpawner;
 
+/// <summary>
+/// Implementation of <c>IObjectSpawner</c>. Uses <c>NetworkMessage</c> to send requests between the client and the server
+/// </summary>
 public class ObjectSpawner : MonoBehaviour, IObjectSpawner {
 
     [SerializeField]

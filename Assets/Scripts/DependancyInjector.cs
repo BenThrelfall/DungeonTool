@@ -4,6 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Placed in the scene to manage the dependancy injection system
+/// On start will attempt to find and inject dependancies into objects with the <c>IRequiresDependancy</c> interface 
+/// </summary>
+/// <remarks>
+/// Current implementation is not ideally as some behavours are strongly coupled to this class through the static instance.
+/// This would make it hard to easily switch between using different service collections which would be useful for testing.
+/// </remarks>
 public class DependancyInjector : MonoBehaviour {
 
     [SerializeField]
