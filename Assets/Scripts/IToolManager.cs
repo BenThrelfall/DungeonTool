@@ -29,14 +29,15 @@ public interface IToolManager {
     void SwitchToTool(DungTool tool);
 
     /// <summary>
-    /// Deactivates all tools.
+    /// Suspends all tools meaning they will not be active until
+    /// <c>ResumeAllTools</c> is called
     /// </summary>
-    void DisableAllTools();
+    void PauseAllTools();
 
     /// <summary>
-    /// Switches the active tool to whatever tool was active before the currenlty
+    /// Reenables the active tool.
     /// active tool.
     /// </summary>
-    void EnableLastTool();
+    void ResumeAllTools();
 
 }

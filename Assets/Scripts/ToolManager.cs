@@ -13,8 +13,8 @@ using UnityEngine;
 public class ToolManager : NetworkBehaviour, IToolManager {
 
     Dictionary<DungTool, GameObject> tools = new Dictionary<DungTool, GameObject>();
-    GameObject activeTool;
-    GameObject lastTool;
+    DungTool activeTool;
+    bool toolsEnabled;
 
     [SerializeField]
     GameObject selectTool;
@@ -25,10 +25,16 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     [SerializeField]
     GameObject rulerTool;
 
+    [SerializeField]
+    GameObject permTools;
+
     public event Action<DungTool> ToolChanged;
 
     public override void OnStartClient() {
-        DisableAllTools();
+        base.OnStartClient();
+
+        toolsEnabled = true;
+        SwitchToTool(DungTool.Select);
     }
 
     private void Start() {
@@ -37,38 +43,38 @@ public class ToolManager : NetworkBehaviour, IToolManager {
         tools.Add(DungTool.Pointer, pointerTool);
     }
 
-    public void DisableAllTools() {
-
-        lastTool = activeTool;
-        activeTool = null;
-
-        foreach (var tool in tools.Values) {
-            tool.SetActive(false);
-        }
-    }
-
-    public void EnableLastTool() {
-
-        var temp = activeTool;
-        activeTool = lastTool;
-        lastTool = temp;
-
-    }
-
     public void SwitchToTool(DungTool tool) {
-        lastTool = activeTool;
+        SetActiveTool(tool);
+        if (!toolsEnabled) return;
+        EnableToolGameObject();
+    }
 
+    private void EnableToolGameObject() {
         foreach (var item in tools) {
-            if(item.Key == tool) {
-                activeTool = item.Value;
+            if (item.Key == activeTool) {
                 item.Value.SetActive(true);
             }
             else {
                 item.Value.SetActive(false);
             }
         }
+    }
 
+    private void SetActiveTool(DungTool tool) {
+        activeTool = tool;
         ToolChanged?.Invoke(tool);
+    }
 
+    public void PauseAllTools() {
+        if (!gameObject.activeSelf) return;
+        toolsEnabled = false;
+        tools[activeTool].SetActive(false);
+        permTools.SetActive(false);
+    }
+
+    public void ResumeAllTools() {
+        if (!gameObject.activeSelf) return;
+        EnableToolGameObject();
+        permTools.SetActive(true);
     }
 }
