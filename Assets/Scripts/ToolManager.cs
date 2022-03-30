@@ -14,7 +14,7 @@ public class ToolManager : NetworkBehaviour, IToolManager {
 
     Dictionary<DungTool, GameObject> tools = new Dictionary<DungTool, GameObject>();
     DungTool activeTool;
-    bool toolsEnabled;
+    [SerializeField]bool toolsEnabled;
 
     [SerializeField]
     GameObject selectTool;
@@ -27,6 +27,9 @@ public class ToolManager : NetworkBehaviour, IToolManager {
 
     [SerializeField]
     GameObject permTools;
+
+    [SerializeField]
+    List<GameObject> toolUIObjects;
 
     public event Action<DungTool> ToolChanged;
 
@@ -44,12 +47,14 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     }
 
     public void SwitchToTool(DungTool tool) {
+        DisableAllToolUIObjects();
         SetActiveTool(tool);
         if (!toolsEnabled) return;
         EnableToolGameObject();
     }
 
     private void EnableToolGameObject() {
+
         foreach (var item in tools) {
             if (item.Key == activeTool) {
                 item.Value.SetActive(true);
@@ -57,6 +62,12 @@ public class ToolManager : NetworkBehaviour, IToolManager {
             else {
                 item.Value.SetActive(false);
             }
+        }
+    }
+
+    void DisableAllToolUIObjects() {
+        foreach (var obj in toolUIObjects) {
+            obj.SetActive(false);
         }
     }
 
@@ -74,6 +85,7 @@ public class ToolManager : NetworkBehaviour, IToolManager {
 
     public void ResumeAllTools() {
         if (!gameObject.activeSelf) return;
+        toolsEnabled = true;
         EnableToolGameObject();
         permTools.SetActive(true);
     }
