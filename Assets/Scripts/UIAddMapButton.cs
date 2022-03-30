@@ -14,6 +14,10 @@ public class UIAddMapButton : MonoBehaviour, IRequiresDependancy {
 
     IFileIOService fileIOService;
 
+    private void Start() {
+        SetUpDependancies(DependancyInjector.instance.Services);
+    }
+
     /// <summary>
     /// Prompts a user to choose a file from the file system then sends
     /// the bytes from that file to the map collection to be added as a new map.

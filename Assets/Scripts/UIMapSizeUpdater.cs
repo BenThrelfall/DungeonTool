@@ -12,6 +12,10 @@ public class UIMapSizeUpdater : MonoBehaviour, IRequiresDependancy {
 
     Vector2 size;
 
+    private void Start() {
+        SetUpDependancies(DependancyInjector.instance.Services);
+    }
+
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         updater = serviceCollection.GetService<IMapUpdater>();
     }

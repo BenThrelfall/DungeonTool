@@ -14,6 +14,10 @@ public class UIAddTokenButton : MonoBehaviour, IRequiresDependancy {
 
     IFileIOService fileIOService;
 
+    private void Start() {
+        SetUpDependancies(DependancyInjector.instance.Services);
+    }
+
     /// <summary>
     /// Prompt a user to choose a file from the file system then send the
     /// bytes of that file to the token collection to be added as a new token

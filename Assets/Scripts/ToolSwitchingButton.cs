@@ -23,6 +23,10 @@ public class ToolSwitchingButton : MonoBehaviour, IRequiresDependancy {
     [SerializeField]
     DungTool target;
 
+    private void Start() {
+        SetUpDependancies(DependancyInjector.instance.Services);
+    }
+
     /// <summary>
     /// Switch the tool manager to this instances <c>target</c> tool
     /// </summary>
