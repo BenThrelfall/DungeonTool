@@ -6,40 +6,25 @@ using UnityEngine;
 using static IObjectSpawner;
 
 /// <summary>
-/// Implementation of <c>IObjectSpawner</c>. Uses <c>NetworkMessage</c> to send requests between the client and the server
+/// Implementation of <c>IObjectSpawner</c>. Uses Commands to send requests between the client and the server
 /// </summary>
-public class ObjectSpawner : MonoBehaviour, IObjectSpawner {
+public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [SerializeField]
     GameObject tokenPrefab;
 
-    public struct ObjectSpawnRequest : NetworkMessage {
-        public SpawnType spawnType;
-        public string hash;
-    }
+    [Command(requiresAuthority = false)]
+    void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash) {
 
-    void Start() {
-        NetworkServer.RegisterHandler<ObjectSpawnRequest>(ServerHandleSpawnRequest);
-    }
-
-    private void ServerHandleSpawnRequest(NetworkConnectionToClient client, ObjectSpawnRequest request) {
-
-        if (request.spawnType != SpawnType.token) throw new NotImplementedException();
+        if (spawnType != SpawnType.token) throw new NotImplementedException();
 
         var token = Instantiate(tokenPrefab, Vector3.zero, Quaternion.identity);
         NetworkServer.Spawn(token);
         var spriteSync = token.GetComponent<SyncedRuntimeSprite>();
-        spriteSync.targetHash = request.hash;
+        spriteSync.targetHash = hash;
     }
 
     public void SpawnObject(SpawnType type, string hash) {
-
-        ObjectSpawnRequest request = new ObjectSpawnRequest() {
-            hash = hash,
-            spawnType = type,
-        };
-
-        NetworkClient.Send(request);
-
+        CmdServerHandleSpawnRequest(type, hash);
     }
 }
