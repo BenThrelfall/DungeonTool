@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1489015687704126621}
   - component: {fileID: 1765626716131474149}
   - component: {fileID: 4850562343905724445}
+  - component: {fileID: -4747238459907905652}
   m_Layer: 0
   m_Name: Ruler
   m_TagString: Untagged
@@ -138,6 +139,20 @@ MonoBehaviour:
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   target: {fileID: 1026406735732437413}
+--- !u!114 &-4747238459907905652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5847498469938651323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ae25857220c9744abeefe994c904637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
 --- !u!1 &6358173500733649387
 GameObject:
   m_ObjectHideFlags: 0

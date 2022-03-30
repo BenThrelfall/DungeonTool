@@ -7,6 +7,8 @@ public enum DungTool {
     Select,
     Pointer,
     Ruler,
+    CircleRuler,
+
 }
 
 /// <summary>

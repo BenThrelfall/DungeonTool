@@ -55,6 +55,16 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
     }
 
     public void Resize(Vector2 newSize) {
+
+        if (newSize.x > transform.localScale.x) {
+            DragPosition(Vector2.one * 0.5f);
+            Move();
+        }
+        else {
+            DragPosition(-Vector2.one * 0.5f);
+            Move();
+        }
+
         transform.localScale = newSize;
         CmdResize(newSize);
     }

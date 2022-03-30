@@ -26,6 +26,9 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     GameObject rulerTool;
 
     [SerializeField]
+    GameObject circleRuler;
+
+    [SerializeField]
     GameObject permTools;
 
     [SerializeField]
@@ -44,6 +47,7 @@ public class ToolManager : NetworkBehaviour, IToolManager {
         tools.Add(DungTool.Ruler, rulerTool);
         tools.Add(DungTool.Select, selectTool);
         tools.Add(DungTool.Pointer, pointerTool);
+        tools.Add(DungTool.CircleRuler, circleRuler);
     }
 
     public void SwitchToTool(DungTool tool) {

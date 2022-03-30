@@ -3,15 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Spawns a ruler for measuring distance.
-/// </summary>
-public class RulerTool : NetworkBehaviour {
+public class CircleRulerTool : NetworkBehaviour {
 
     public GameObject rulerObject;
     public Camera mainCamera;
-
-    public float width;
 
     GameObject activeRuler;
 
@@ -26,7 +21,7 @@ public class RulerTool : NetworkBehaviour {
         if (Input.GetMouseButtonDown(0)) {
             if (activeRuler != null) CmdDestroyRuler(activeRuler);
             Vector2 rawStartPoint = (Vector2)mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 startPoint = new Vector2(Mathf.RoundToInt(rawStartPoint.x), Mathf.RoundToInt(rawStartPoint.y));
+            Vector2 startPoint = new Vector2(Mathf.RoundToInt(rawStartPoint.x - 0.5f) + 0.5f, Mathf.RoundToInt(rawStartPoint.y - 0.5f) + 0.5f);
             CmdSpawnRuler(startPoint);
         }
     }
@@ -43,17 +38,16 @@ public class RulerTool : NetworkBehaviour {
         Vector2 rawCurrentPos;
         Vector2 currentPos;
 
-        var rulerComp = ruler.GetComponent<Ruler>();
+        var rulerComp = ruler.GetComponent<CircleRuler>();
 
         while (Input.GetMouseButton(0)) {
             rawCurrentPos = (Vector2)mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            currentPos = new Vector2(Mathf.RoundToInt(rawCurrentPos.x), Mathf.RoundToInt(rawCurrentPos.y));
+            currentPos = new Vector2(Mathf.RoundToInt(rawCurrentPos.x - 0.5f) + 0.5f, Mathf.RoundToInt(rawCurrentPos.y - 0.5f)  + 0.5f);
 
-            rulerComp.SetRuler(startPoint, currentPos, width);
+            rulerComp.SetRuler(startPoint, currentPos);
 
             yield return null;
         }
-
     }
 
     [Command(requiresAuthority = false)]
@@ -75,4 +69,3 @@ public class RulerTool : NetworkBehaviour {
     }
 
 }
-

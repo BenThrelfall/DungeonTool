@@ -20,6 +20,9 @@ public class HotKeys : MonoBehaviour, IRequiresDependancy {
         if (Input.GetKeyDown(KeyCode.R)) {
             toolManager.SwitchToTool(DungTool.Ruler);
         }
+        if (Input.GetKeyDown(KeyCode.C)) {
+            toolManager.SwitchToTool(DungTool.CircleRuler);
+        }
 
     }
 

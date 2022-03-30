@@ -61,34 +61,41 @@ public class SelectTool : MonoBehaviour {
     private void RegularInputs() {
         
         if (Input.GetKeyDown(KeyCode.Delete)) {
-            foreach (var item in selectedObjects) {
-                item.Delete();
-            }
-
-            DeselectAll();
+            DeleteSelectedItems();
         }
 
         if (Input.GetKeyDown(KeyCode.Minus)) {
-            foreach (var item in selectedObjects) {
-                if (item.ObjectBounds.size.x == 1) continue;
-                item.DragPosition(-Vector2.one * 0.5f);
-                item.Resize(item.ObjectBounds.size - Vector3.one);
-                item.Move();
-            }
+            DownSizeSelectedItems();
         }
 
         if (Input.GetKeyDown(KeyCode.Equals)) {
-            foreach (var item in selectedObjects) {
-                item.DragPosition(Vector2.one * 0.5f);
-                item.Resize(item.ObjectBounds.size + Vector3.one);
-                item.Move();
-            }
+            UpSizeSelectedItems();
         }
 
         if (Input.GetMouseButtonUp(0)) {
             mode = SelectMode.None;
             dragArea.SetActive(false);
         }
+    }
+
+    public void UpSizeSelectedItems() {
+        foreach (var item in selectedObjects) {
+            item.Resize(item.ObjectBounds.size + Vector3.one);
+        }
+    }
+
+    public void DownSizeSelectedItems() {
+        foreach (var item in selectedObjects) {
+            if (item.ObjectBounds.size.x == 1) continue;
+            item.Resize(item.ObjectBounds.size - Vector3.one);
+        }
+    }
+
+    public void DeleteSelectedItems() {
+        foreach (var item in selectedObjects) {
+            item.Delete();
+        }
+        DeselectAll();
     }
 
     /// <summary>
