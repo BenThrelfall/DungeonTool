@@ -2,10 +2,14 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class UserRoleManager : NetworkBehaviour {
 
     bool usersHaveJoined = false;
+
+    [SerializeField]
+    RenderPipelineAsset dmRenderAsset;
 
     [SerializeField]
     List<GameObject> dmObjects = new List<GameObject>();
@@ -38,6 +42,8 @@ public class UserRoleManager : NetworkBehaviour {
         foreach (var obj in dmObjects) {
             obj.SetActive(true);
         }
+
+        GraphicsSettings.renderPipelineAsset = dmRenderAsset;
 
     }
 
