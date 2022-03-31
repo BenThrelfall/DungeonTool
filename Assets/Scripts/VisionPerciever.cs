@@ -9,7 +9,7 @@ public class VisionPerciever : MonoBehaviour {
     public float extraAmount = 1f;
     public LayerMask visionLayerMask;
 
-    public MeshFilter memoryMeshFilter;
+    //public MeshFilter memoryMeshFilter;
     public MeshFilter extraMeshFilter;
     MeshFilter meshFilter;
     Transform trans;
@@ -89,24 +89,24 @@ public class VisionPerciever : MonoBehaviour {
         //DoMemory(memoryMesh, origin); Too expensive and doesn't really work
     }
 
-    private void DoMemory(Mesh memoryMesh, Vector3 origin) {
-        bool hasPrevMem = memoryMeshFilter.mesh != null;
+    //private void DoMemory(Mesh memoryMesh, Vector3 origin) {
+    //    bool hasPrevMem = memoryMeshFilter.mesh != null;
 
-        CombineInstance[] combine = new CombineInstance[hasPrevMem ? 2 : 1];
-        combine[0].subMeshIndex = 0;
-        combine[0].mesh = meshFilter.sharedMesh;
-        combine[0].transform = Matrix4x4.identity;
+    //    CombineInstance[] combine = new CombineInstance[hasPrevMem ? 2 : 1];
+    //    combine[0].subMeshIndex = 0;
+    //    combine[0].mesh = meshFilter.sharedMesh;
+    //    combine[0].transform = Matrix4x4.identity;
 
-        if (hasPrevMem) {
-            combine[1].subMeshIndex = 0;
-            combine[1].mesh = memoryMeshFilter.sharedMesh;
-            combine[1].transform = Matrix4x4.TRS(previousPosition - origin, Quaternion.identity, Vector3.one);
-        }
+    //    if (hasPrevMem) {
+    //        combine[1].subMeshIndex = 0;
+    //        combine[1].mesh = memoryMeshFilter.sharedMesh;
+    //        combine[1].transform = Matrix4x4.TRS(previousPosition - origin, Quaternion.identity, Vector3.one);
+    //    }
 
-        memoryMesh.CombineMeshes(combine);
+    //    memoryMesh.CombineMeshes(combine);
 
-        memoryMeshFilter.mesh = memoryMesh;
-    }
+    //    memoryMeshFilter.mesh = memoryMesh;
+    //}
 
     private void LateUpdate() {
         if (previousPosition != trans.position) {
