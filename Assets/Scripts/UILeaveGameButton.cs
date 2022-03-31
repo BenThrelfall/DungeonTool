@@ -2,23 +2,13 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UILeaveGameButton : MonoBehaviour {
 
     [SerializeField]
     NetworkManager manager;
-
-    [SerializeField]
-    GameObject pregameUI;
-
-    [SerializeField]
-    GameObject connectionButtons;
-
-    [SerializeField]
-    GameObject connectingStatus;
-
-    [SerializeField]
-    GameObject gameUI;
+    
 
     public void LeaveGameClicked() {
 
@@ -34,11 +24,9 @@ public class UILeaveGameButton : MonoBehaviour {
             manager.StopServer();
         }
 
-        pregameUI.SetActive(true);
-        connectionButtons.SetActive(true);
-        connectingStatus.SetActive(false);
+        Destroy(manager.gameObject);
 
-        gameUI.SetActive(false);
+        SceneManager.LoadScene(0);
 
     }
 
