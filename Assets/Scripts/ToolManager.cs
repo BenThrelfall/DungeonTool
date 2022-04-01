@@ -32,6 +32,9 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     GameObject fogTool;
 
     [SerializeField]
+    GameObject terrainBox;
+
+    [SerializeField]
     GameObject permTools;
 
     [SerializeField]
@@ -52,6 +55,7 @@ public class ToolManager : NetworkBehaviour, IToolManager {
         tools.Add(DungTool.Pointer, pointerTool);
         tools.Add(DungTool.CircleRuler, circleRuler);
         tools.Add(DungTool.Fog, fogTool);
+        tools.Add(DungTool.TerrainBox, terrainBox);
     }
 
     public void SwitchToTool(DungTool tool) {

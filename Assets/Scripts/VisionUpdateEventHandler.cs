@@ -8,7 +8,12 @@ public class VisionUpdateEventHandler : MonoBehaviour, IVisionUpdateEventHandler
 
     public event Action VisionUpdate;
 
-    public void InvokeVisionUpdate() {
+    public void InvokeVisionUpdate(float delay) {
+        StartCoroutine(CallAfterDelay(delay));
+    }
+
+    IEnumerator CallAfterDelay(float delay) {
+        yield return new WaitForSecondsRealtime(delay);
         VisionUpdate?.Invoke();
     }
 }

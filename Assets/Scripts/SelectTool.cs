@@ -174,7 +174,9 @@ public class SelectTool : MonoBehaviour {
                 dragArea.transform.position = startPoint - diag * 0.5f;
                 dragRenderer.size = diag;
                 List<Collider2D> selected = new List<Collider2D>();
-                Physics2D.OverlapArea(startPoint, MousePos(), new ContactFilter2D() { layerMask = layerMask }, selected);
+                var filter = new ContactFilter2D();
+                filter.SetLayerMask(layerMask);
+                Physics2D.OverlapArea(startPoint, MousePos(), filter, selected);
 
                 foreach (var item in selected) {
                     var selectable = item.GetComponent<ISelectable>();

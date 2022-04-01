@@ -11,7 +11,9 @@ public interface IObjectSpawner {
     /// Type of object to be spawned
     /// </summary>
     public enum SpawnType {
-        token
+        token,
+        playerToken,
+        terrainBox
     }
 
     /// <summary>
@@ -20,4 +22,6 @@ public interface IObjectSpawner {
     /// <param name="type">Type of object to spawn</param>
     /// <param name="hash">Hash that will be provided to the spawned objects SpriteSync component</param>
     public void SpawnObject(SpawnType type, string hash);
+    public void SpawnObject(SpawnType type, string hash, Vector3 position, Quaternion rotation, Vector3 scale);
+    public void DespawnObject(GameObject gameObject);
 }

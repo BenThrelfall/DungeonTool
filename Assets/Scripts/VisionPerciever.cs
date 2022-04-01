@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VisionPerciever : MonoBehaviour {
+public class VisionPerciever : MonoBehaviour, IRequiresDependancy {
 
     public int rayCount;
     public float viewDistance;
@@ -17,10 +17,24 @@ public class VisionPerciever : MonoBehaviour {
 
     Vector3 previousPosition;
 
+    IVisionUpdateEventHandler visionEventHandler;
+
+    private void Awake() {
+        SetUpDependancies(DependancyInjector.instance.Services);
+    }
+
     void Start() {
         previousPosition = transform.position;
         FetchComponents();
         UpdateVision();
+    }
+
+    private void OnEnable() {
+        visionEventHandler.VisionUpdate += UpdateVision;
+    }
+
+    private void OnDisable() {
+        visionEventHandler.VisionUpdate -= UpdateVision;
     }
 
     private void UpdateVision() {
@@ -120,4 +134,7 @@ public class VisionPerciever : MonoBehaviour {
         trans = GetComponent<Transform>();
     }
 
+    public void SetUpDependancies(ServiceCollection serviceCollection) {
+        visionEventHandler = serviceCollection.GetService<IVisionUpdateEventHandler>();
+    }
 }

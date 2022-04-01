@@ -29,7 +29,12 @@ public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
     /// assigned to this behavour instance.
     /// </summary>
     public void OnClick() {
-        spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash);
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            spawner.SpawnObject(IObjectSpawner.SpawnType.playerToken, tokenHash);
+        }
+        else {
+            spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash);
+        }
     }
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {

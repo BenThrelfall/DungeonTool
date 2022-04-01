@@ -26,6 +26,9 @@ public class HotKeys : MonoBehaviour, IRequiresDependancy {
         if (Input.GetKeyDown(KeyCode.F)) {
             toolManager.SwitchToTool(DungTool.Fog);
         }
+        if (Input.GetKeyDown(KeyCode.B)) {
+            toolManager.SwitchToTool(DungTool.TerrainBox);
+        }
 
     }
 

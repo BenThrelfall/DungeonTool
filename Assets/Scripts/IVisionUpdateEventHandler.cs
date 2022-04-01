@@ -7,6 +7,6 @@ public interface IVisionUpdateEventHandler {
 
     event Action VisionUpdate;
 
-    void InvokeVisionUpdate();
+    void InvokeVisionUpdate(float delay);
 
 }

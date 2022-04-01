@@ -13,18 +13,51 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
     [SerializeField]
     GameObject tokenPrefab;
 
+    [SerializeField]
+    GameObject playerTokenPrefab;
+
+    [SerializeField]
+    GameObject terrainBoxPrefab;
+
     [Command(requiresAuthority = false)]
-    void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash) {
+    void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
 
-        if (spawnType != SpawnType.token) throw new NotImplementedException();
+        GameObject spawnedObject;
 
-        var token = Instantiate(tokenPrefab, Vector3.zero, Quaternion.identity);
-        NetworkServer.Spawn(token);
-        var spriteSync = token.GetComponent<SyncedRuntimeSprite>();
+        if (spawnType == SpawnType.playerToken) {
+            spawnedObject = Instantiate(playerTokenPrefab, position, rotation);
+        }
+        else if (spawnType == SpawnType.token) {
+            spawnedObject = Instantiate(tokenPrefab, position, rotation);
+        }
+        else if (spawnType == SpawnType.terrainBox) {
+            spawnedObject = Instantiate(terrainBoxPrefab, position, rotation);
+        }
+        else {
+            throw new NotImplementedException();
+        }
+
+        spawnedObject.transform.localScale = scale;
+        NetworkServer.Spawn(spawnedObject);
+        if (spawnType == SpawnType.terrainBox) return;
+        var spriteSync = spawnedObject.GetComponent<SyncedRuntimeSprite>();
         spriteSync.targetHash = hash;
     }
 
     public void SpawnObject(SpawnType type, string hash) {
-        CmdServerHandleSpawnRequest(type, hash);
+        SpawnObject(type, hash, Vector3.zero, Quaternion.identity, Vector3.one);
+    }
+
+    public void SpawnObject(SpawnType type, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
+        CmdServerHandleSpawnRequest(type, hash,position, rotation, scale);
+    }
+
+    public void DespawnObject(GameObject gameObject) {
+        CmdDespawnObject(gameObject);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdDespawnObject(GameObject gameObject) {
+        NetworkServer.Destroy(gameObject);
     }
 }
