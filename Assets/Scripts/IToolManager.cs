@@ -8,7 +8,7 @@ public enum DungTool {
     Pointer,
     Ruler,
     CircleRuler,
-
+    Fog
 }
 
 /// <summary>
