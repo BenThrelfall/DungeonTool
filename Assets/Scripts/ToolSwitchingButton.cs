@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// Behavour that goes on each UI element that switches the active tool.
@@ -15,7 +15,7 @@ public class ToolSwitchingButton : MonoBehaviour, IRequiresDependancy {
     /// Text that will be highlighted when this instances <c>target</c> tool is active 
     /// </summary>
     [SerializeField]
-    TextMeshProUGUI text;
+    Image image;
 
     /// <summary>
     /// Tool that will be switched to
@@ -51,10 +51,10 @@ public class ToolSwitchingButton : MonoBehaviour, IRequiresDependancy {
     /// <param name="tool">Tool that is now active</param>
     private void ToolManager_ToolChanged(DungTool tool) {
         if (tool == target) {
-            text.color = Color.green;
+            image.color = new Color(0.749f, 0.023f, 0.0117f);
         }
         else {
-            text.color = Color.black;
+            image.color = new Color(0.98f, 0.98f, 0.98f);
         }
     }
 }
