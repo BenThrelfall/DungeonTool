@@ -1414,6 +1414,7 @@ MonoBehaviour:
   dmRenderAsset: {fileID: 11400000, guid: ba1bfa426162a594b91afb735a6a240e, type: 2}
   dmObjects:
   - {fileID: 1178605908}
+  - {fileID: 1901151208}
 --- !u!114 &239282585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10398,7 +10399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1901151209
 RectTransform:
   m_ObjectHideFlags: 0
