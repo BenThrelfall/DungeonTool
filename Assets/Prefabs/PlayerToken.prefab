@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayCount: 400
-  viewDistance: 12
+  viewDistance: 100
   extraAmount: 0.4
   visionLayerMask:
     serializedVersion: 2
@@ -316,7 +316,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 26bcd8e1c53bb5e4aac641d5811c855b
+  m_AssetId: 7df773bfd3f44414fb0d933619ce57f6
   hasSpawned: 0
 --- !u!114 &3340364776736248016
 MonoBehaviour:
