@@ -13,6 +13,7 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
 
     ISpriteCollection spriteCollection;
 
+    [SerializeField]
     SpriteRenderer spriteRenderer;
     Image image;
 
@@ -29,7 +30,7 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
     }
 
     private void Start() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
         image = GetComponent<Image>();
         if (dontAutoDependancies == false) SetUpDependancies(DependancyInjector.instance.Services);
     }
