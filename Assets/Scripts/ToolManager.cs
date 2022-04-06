@@ -59,6 +59,9 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     }
 
     public void SwitchToTool(DungTool tool) {
+
+        if (activeTool == tool) return;
+
         DisableAllToolUIObjects();
         SetActiveTool(tool);
         if (!toolsEnabled) return;
