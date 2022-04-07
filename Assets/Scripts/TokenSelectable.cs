@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TokenSelectable : NetworkBehaviour, ISelectable {
+public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependancy {
     public Bounds ObjectBounds => col.bounds;
 
     BoxCollider2D col;
@@ -11,20 +11,17 @@ public class TokenSelectable : NetworkBehaviour, ISelectable {
     
     [SerializeField]
     Transform spriteTrans;
- 
+
+    IObjectSpawner spawner;
 
     private void Start() {
         col = GetComponent<BoxCollider2D>();
         officalPos = transform.position;
+        SetUpDependancies(DependancyInjector.instance.Services);
     }
 
     public void Delete() {
-        CmdDelete();
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdDelete() {
-        NetworkServer.Destroy(gameObject);
+        spawner.DespawnObject(gameObject);
     }
 
     public void DragPosition(Vector2 delta) {
@@ -82,7 +79,8 @@ public class TokenSelectable : NetworkBehaviour, ISelectable {
         col.size = newSize;
     }
 
-
-
+    public void SetUpDependancies(ServiceCollection serviceCollection) {
+        spawner = serviceCollection.GetService<IObjectSpawner>();
+    }
 }
 

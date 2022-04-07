@@ -8,7 +8,7 @@ using static IObjectSpawner;
 /// <summary>
 /// Implementation of <c>IObjectSpawner</c>. Uses Commands to send requests between the client and the server
 /// </summary>
-public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
+public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager {
 
     [SerializeField]
     GameObject tokenPrefab;
@@ -18,6 +18,8 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [SerializeField]
     GameObject terrainBoxPrefab;
+
+    List<GameObject> spawnedObjects = new List<GameObject>();
 
     [Command(requiresAuthority = false)]
     void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
@@ -36,6 +38,8 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
         else {
             throw new NotImplementedException();
         }
+
+        spawnedObjects.Add(spawnedObject);
 
         spawnedObject.transform.localScale = scale;
         NetworkServer.Spawn(spawnedObject);
@@ -58,6 +62,40 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [Command(requiresAuthority = false)]
     void CmdDespawnObject(GameObject gameObject) {
+        spawnedObjects.Remove(gameObject);
         NetworkServer.Destroy(gameObject);
+    }
+
+    public IEnumerable<SaveData> GetActiveSaveData() {
+        List<SaveData> output = new List<SaveData>();
+
+        foreach (var gameObj in spawnedObjects) {
+            var save = gameObj.GetComponent<ISaveable>();
+            if (save == null) continue;
+            output.Add(save.SaveData);
+        }
+
+        return output;
+
+    }
+
+    public void LoadFromSaveData(IEnumerable<SaveData> saveables) {
+
+        DespawnAllSpawnedObjects();
+
+        if (saveables == null) return;
+
+        foreach (var saveData in saveables) {
+            SpawnObject(saveData.ObjectType, saveData.SpriteHash, saveData.Position, Quaternion.identity, saveData.Scale);
+        }
+
+    }
+
+    private void DespawnAllSpawnedObjects() {
+        foreach (var gameObj in spawnedObjects) {
+            NetworkServer.Destroy(gameObj);
+        }
+
+        spawnedObjects.Clear();
     }
 }

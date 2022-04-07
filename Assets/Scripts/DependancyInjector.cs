@@ -38,6 +38,10 @@ public class DependancyInjector : MonoBehaviour {
     [SerializeField]
     VisionUpdateEventHandler visionEventHandler;
 
+    [SerializeField]
+    BoardManager boardManager;
+
+
     public static DependancyInjector instance;
     public ServiceCollection Services { get; set; }
 
@@ -67,6 +71,8 @@ public class DependancyInjector : MonoBehaviour {
         services.AddService<IFrameRateLimiter>(rateLimiter);
         services.AddService<IToolManager>(toolManager);
         services.AddService<IVisionUpdateEventHandler>(visionEventHandler);
+        services.AddService<ISaveablesManager>(spawner);
+        services.AddService<IBoardManager>(boardManager);
 
         return services;
 
