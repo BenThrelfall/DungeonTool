@@ -28,4 +28,11 @@ public interface ISpriteCollection {
     /// <param name="hash">Hash of the raw data</param>
     void AddSprite(byte[] imageData, string hash);
 
+    /// <summary>
+    /// Loads a sprite stored on the server file system into the sprite collection.
+    /// The Sprite will be added and synced across the network.
+    /// </summary>
+    /// <param name="hash">Hash of the sprites raw data</param>
+    void LoadSpriteFromStorage(string hash);
+
 }

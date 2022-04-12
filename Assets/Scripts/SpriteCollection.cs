@@ -2,6 +2,8 @@ using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -13,6 +15,8 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
     IImageDataCollection imageCollection;
 
     Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
+
+    string spriteFolder;
 
     public readonly struct NetworkSprite : IEquatable<NetworkSprite> {
         public readonly string hash;
@@ -31,18 +35,30 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
         CmdSyncToNewClient();
     }
 
+    public override void OnStartServer() {
+        base.OnStartServer();
+
+        SetUpSpriteFolder();
+    }
+
     private void Start() {
         SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    [Server]
+    private void SetUpSpriteFolder() {
+        spriteFolder = Application.persistentDataPath + "/sprites/";
+        if (Directory.Exists(spriteFolder) == false) Directory.CreateDirectory(spriteFolder);
+    }
+
     [ClientRpc]
-    private void ClientOnNetworkSprite(NetworkSprite data) {
+    private void RpcClientOnNetworkSprite(NetworkSprite data) {
         if (sprites.ContainsKey(data.hash)) return;
         StartCoroutine(HandleSpriteRecival(data, false));
     }
 
     [Command(requiresAuthority = false)]
-    private void ServerOnNetworkSprite(NetworkSprite data) {
+    private void CmdServerOnNetworkSprite(NetworkSprite data) {
         StartCoroutine(HandleSpriteRecival(data, true));
     }
 
@@ -51,7 +67,7 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
 
         foreach (var spritePair in sprites) {
             byte[] data = imageCollection.GetImage(spritePair.Key);
-            ClientOnNetworkSprite(new NetworkSprite(spritePair.Key));
+            RpcClientOnNetworkSprite(new NetworkSprite(spritePair.Key));
         }
 
     }
@@ -68,9 +84,15 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
         AddSpriteLocally(imageData, data.hash);
 
         if (isServer) {
-            ClientOnNetworkSprite(data);
+            ServerAfterHandleSpriteRecival(data, imageData);
         }
 
+    }
+
+    [Server]
+    private void ServerAfterHandleSpriteRecival(NetworkSprite data, byte[] imageData) {
+        File.WriteAllBytes($"{spriteFolder}{data.hash}.png", imageData);
+        RpcClientOnNetworkSprite(data);
     }
 
     public Sprite GetSprite(string hash) {
@@ -84,7 +106,7 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
 
         AddSpriteLocally(imageData, hash);
 
-        ServerOnNetworkSprite(new NetworkSprite(hash));
+        CmdServerOnNetworkSprite(new NetworkSprite(hash));
         imageCollection.AddImage(imageData, hash);
 
     }
@@ -111,5 +133,18 @@ public class SpriteCollection : NetworkBehaviour, ISpriteCollection, IRequiresDe
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         imageCollection = serviceCollection.GetService<IImageDataCollection>();
+    }
+
+    [Server]
+    public void LoadSpriteFromStorage(string hash) {
+        if (sprites.Keys.Contains(hash)) return;
+        if (File.Exists($"{spriteFolder}{hash}.png") == false) return;
+
+        byte[] imageData = File.ReadAllBytes($"{spriteFolder}{hash}.png");
+
+        AddSpriteLocally(imageData, hash);
+        imageCollection.AddImage(imageData, hash);
+        RpcClientOnNetworkSprite(new NetworkSprite(hash));
+
     }
 }

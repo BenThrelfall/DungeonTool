@@ -15,6 +15,7 @@ public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy
     string boardsFolder;
 
     ISaveablesManager saveManager;
+    ISpriteCollection spriteCollection;
 
     public event Action<int> boardsUpdated;
 
@@ -123,10 +124,17 @@ public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy
         if (string.IsNullOrEmpty(json)) return;
         var savables = JsonHelper.FromJson<SaveData>(json);
         saveManager.LoadFromSaveData(savables);
+
+        HashSet<string> hashes = new HashSet<string>(savables.Select(x => x.SpriteHash));
+        foreach (var hash in hashes) {
+            spriteCollection.LoadSpriteFromStorage(hash);
+        }
+
     }
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         saveManager = serviceCollection.GetService<ISaveablesManager>();
+        spriteCollection = serviceCollection.GetService<ISpriteCollection>();
     }
 
     public void RequestBoardUpdate() {
