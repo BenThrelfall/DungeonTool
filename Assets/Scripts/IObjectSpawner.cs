@@ -13,7 +13,8 @@ public interface IObjectSpawner {
     public enum SpawnType {
         token,
         playerToken,
-        terrainBox
+        terrainBox,
+        map
     }
 
     /// <summary>

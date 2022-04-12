@@ -23,6 +23,14 @@ public class SelectTool : MonoBehaviour {
     LayerMask layerMask;
 
     [SerializeField]
+    LayerMask mapLayerMask;
+
+    [SerializeField]
+    LayerMask tokenLayerMask;
+
+    bool mapMaskActive = false;
+
+    [SerializeField]
     GameObject selectObject;
     SpriteRenderer selectRenderer;
     Bounds selectionBounds;
@@ -70,6 +78,11 @@ public class SelectTool : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Equals)) {
             UpSizeSelectedItems();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Insert)) {
+            layerMask = mapMaskActive ? tokenLayerMask : mapLayerMask;
+            mapMaskActive = !mapMaskActive;
         }
 
         if (Input.GetMouseButtonUp(0)) {

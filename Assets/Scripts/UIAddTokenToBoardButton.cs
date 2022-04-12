@@ -32,6 +32,9 @@ public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
         if (Input.GetKey(KeyCode.LeftShift)) {
             spawner.SpawnObject(IObjectSpawner.SpawnType.playerToken, tokenHash);
         }
+        else if (Input.GetKey(KeyCode.LeftControl)) {
+            spawner.SpawnObject(IObjectSpawner.SpawnType.map, tokenHash);
+        }
         else {
             spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash);
         }

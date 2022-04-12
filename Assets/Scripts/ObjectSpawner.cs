@@ -19,6 +19,9 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
     [SerializeField]
     GameObject terrainBoxPrefab;
 
+    [SerializeField]
+    GameObject mapPrefab;
+
     List<GameObject> spawnedObjects = new List<GameObject>();
 
     [Command(requiresAuthority = false)]
@@ -34,6 +37,9 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
         }
         else if (spawnType == SpawnType.terrainBox) {
             spawnedObject = Instantiate(terrainBoxPrefab, position, rotation);
+        }
+        else if(spawnType == SpawnType.map) {
+            spawnedObject = Instantiate(mapPrefab, position, rotation);
         }
         else {
             throw new NotImplementedException();

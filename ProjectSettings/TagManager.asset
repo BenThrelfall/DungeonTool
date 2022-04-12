@@ -19,7 +19,7 @@ TagManager:
   - Terrain
   - Fog
   - AlwaysInFront
-  - 
+  - MapSelectable
   - 
   - 
   - 
