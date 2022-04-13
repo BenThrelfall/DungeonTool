@@ -12,6 +12,9 @@ using Mirror;
 public class Ruler : NetworkBehaviour {
 
     [SerializeField]
+    SpriteRenderer spriteRenderer;
+
+    [SerializeField]
     Transform line;
 
     [SerializeField]
@@ -28,7 +31,7 @@ public class Ruler : NetworkBehaviour {
         var scale = new Vector3(width, dif.magnitude, 1);
         var position = startPos + dif / 2;
 
-        line.localScale = scale;
+        spriteRenderer.size = scale;
         transform.position = position;
 
         var fiveEDistance = Mathf.Abs(dif.x) > Mathf.Abs(dif.y) ? Mathf.Abs(dif.x) : Mathf.Abs(dif.y);
@@ -36,7 +39,7 @@ public class Ruler : NetworkBehaviour {
         //var realDistance = dif.magnitude;
 
         text.text = fiveEDistance.ToString();
-        RpcUpdateNumber(fiveEDistance.ToString());
+        RpcUpdateNumber(fiveEDistance.ToString(), scale);
     }
 
     [Command(requiresAuthority = false)]
@@ -45,8 +48,9 @@ public class Ruler : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void RpcUpdateNumber(string number) {
+    void RpcUpdateNumber(string number, Vector2 scale) {
         text.text = number;
+        spriteRenderer.size = scale;
     }
 
 }

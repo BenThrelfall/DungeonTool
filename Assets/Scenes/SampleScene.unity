@@ -3451,7 +3451,7 @@ MonoBehaviour:
   syncInterval: 0.1
   rulerObject: {fileID: 5847498469938651323, guid: b4277360e537b1f40a191af725cc25de, type: 3}
   mainCamera: {fileID: 519420031}
-  width: 0.2
+  width: 0.1
 --- !u!114 &647490070
 MonoBehaviour:
   m_ObjectHideFlags: 0

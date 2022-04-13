@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  spriteRenderer: {fileID: 3905464168701825436}
   line: {fileID: 1026406735732437413}
   text: {fileID: 3207450667261902150}
 --- !u!114 &4850562343905724445
@@ -394,11 +395,11 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: 21300000, guid: 02947044012f38d4b84be14dbaea4e4d, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 1eaa747977bfa324dad05265fcac6d20, type: 3}
+  m_Color: {r: 0.7529412, g: 0.3529412, b: 0.3529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
