@@ -86,7 +86,11 @@ public class CircleRuler : NetworkBehaviour, ISelectable {
         return;
     }
 
-    public void Resize(Vector2 newSize) {
+    public void ResizeWithSnapping(Vector2 newSize) {
+        return;
+    }
+
+    public void ResizeNoSnapping(Vector2 newSize) {
         return;
     }
 }

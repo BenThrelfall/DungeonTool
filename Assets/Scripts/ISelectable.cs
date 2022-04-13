@@ -29,7 +29,9 @@ public interface ISelectable {
     /// Changes the objects size and pushes changes across the network
     /// </summary>
     /// <param name="newSize">New size for the object</param>
-    void Resize(Vector2 newSize);
+    void ResizeWithSnapping(Vector2 newSize);
+
+    void ResizeNoSnapping(Vector2 newSize);
     
 
 }

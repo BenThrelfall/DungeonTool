@@ -47,11 +47,26 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
 
         spawnedObjects.Add(spawnedObject);
 
-        spawnedObject.transform.localScale = scale;
-        NetworkServer.Spawn(spawnedObject);
+        ISelectable selectable = spawnedObject.GetComponent<ISelectable>();
+
+        if (selectable == null) {
+            spawnedObject.transform.localScale = scale;
+            NetworkServer.Spawn(spawnedObject);
+        }
+        else {
+            NetworkServer.Spawn(spawnedObject);
+            StartCoroutine(DelayResize(selectable, scale));
+        }
+
         if (spawnType == SpawnType.terrainBox) return;
         var spriteSync = spawnedObject.GetComponent<SyncedRuntimeSprite>();
         spriteSync.targetHash = hash;
+    }
+
+    private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
+        yield return null;
+        yield return null;
+        selectable.ResizeNoSnapping(scale);
     }
 
     public void SpawnObject(SpawnType type, string hash) {

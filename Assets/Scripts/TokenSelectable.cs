@@ -6,6 +6,7 @@ using UnityEngine;
 public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependancy {
     public Bounds ObjectBounds => col.bounds;
 
+    [SerializeField]
     BoxCollider2D col;
     Vector2 officalPos;
     
@@ -15,7 +16,6 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
     IObjectSpawner spawner;
 
     private void Start() {
-        col = GetComponent<BoxCollider2D>();
         officalPos = transform.position;
         SetUpDependancies(DependancyInjector.instance.Services);
     }
@@ -50,7 +50,7 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
         col.size = newSize;
     }
 
-    public void Resize(Vector2 newSize) {
+    public void ResizeWithSnapping(Vector2 newSize) {
 
         if (newSize.x > spriteTrans.localScale.x) {
             DragPosition(Vector2.one * 0.5f);
@@ -61,6 +61,13 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
             Move();
         }
 
+        spriteTrans.localScale = newSize;
+        col.size = newSize;
+        CmdResize(newSize);
+    }
+
+
+    public void ResizeNoSnapping(Vector2 newSize) {
         spriteTrans.localScale = newSize;
         col.size = newSize;
         CmdResize(newSize);

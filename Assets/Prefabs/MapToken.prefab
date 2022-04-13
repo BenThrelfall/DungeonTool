@@ -51,7 +51,7 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 26bcd8e1c53bb5e4aac641d5811c855b
+  m_AssetId: 20c1188caa86cdf4eb238e9c7a59aa5f
   hasSpawned: 0
 --- !u!114 &1910080826122892549
 MonoBehaviour:
@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  col: {fileID: 5181244447705444519}
   spriteTrans: {fileID: 7066125420724404551}
 --- !u!114 &895527617362480070
 MonoBehaviour:

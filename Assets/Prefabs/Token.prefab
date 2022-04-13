@@ -110,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  col: {fileID: 1475386060483315488}
   spriteTrans: {fileID: 3571651580664723136}
 --- !u!114 &6913984263241612353
 MonoBehaviour:

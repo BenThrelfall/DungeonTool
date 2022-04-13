@@ -15,6 +15,8 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
     Collider2D col;
     Vector2 officalPos;
 
+    bool halfSnapped;
+
     private void Start() {
         col = GetComponent<Collider2D>();
         officalPos = transform.position;
@@ -54,17 +56,25 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
         transform.localScale = newSize;
     }
 
-    public void Resize(Vector2 newSize) {
+    public void ResizeWithSnapping(Vector2 newSize) {
 
-        if (newSize.x > transform.localScale.x) {
-            DragPosition(Vector2.one * 0.5f);
-            Move();
+        if (newSize.x % 2 == 0) {
+            if (halfSnapped) {
+                DragPosition(Vector2.one * 0.5f);
+                Move();
+            }
         }
         else {
             DragPosition(-Vector2.one * 0.5f);
             Move();
         }
 
+        transform.localScale = newSize;
+        CmdResize(newSize);
+    }
+
+
+    public void ResizeNoSnapping(Vector2 newSize) {
         transform.localScale = newSize;
         CmdResize(newSize);
     }
@@ -79,7 +89,5 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
     void RpcResize(Vector2 newSize) {
         transform.localScale = newSize;
     }
-
-
 
 }

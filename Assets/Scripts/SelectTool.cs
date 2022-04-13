@@ -93,14 +93,14 @@ public class SelectTool : MonoBehaviour {
 
     public void UpSizeSelectedItems() {
         foreach (var item in selectedObjects) {
-            item.Resize(item.ObjectBounds.size + Vector3.one);
+            item.ResizeWithSnapping(item.ObjectBounds.size + Vector3.one);
         }
     }
 
     public void DownSizeSelectedItems() {
         foreach (var item in selectedObjects) {
             if (item.ObjectBounds.size.x == 1) continue;
-            item.Resize(item.ObjectBounds.size - Vector3.one);
+            item.ResizeWithSnapping(item.ObjectBounds.size - Vector3.one);
         }
     }
 
