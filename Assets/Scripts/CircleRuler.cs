@@ -93,4 +93,10 @@ public class CircleRuler : NetworkBehaviour, ISelectable {
     public void ResizeNoSnapping(Vector2 newSize) {
         return;
     }
+
+    [Server]
+    public void ServerResize(Vector2 _) {
+        return;
+    }
+
 }

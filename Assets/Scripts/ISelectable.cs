@@ -32,6 +32,11 @@ public interface ISelectable {
     void ResizeWithSnapping(Vector2 newSize);
 
     void ResizeNoSnapping(Vector2 newSize);
-    
+
+    /// <summary>
+    /// For use on the server side
+    /// </summary>
+    /// <param name="newSize"></param>
+    void ServerResize(Vector2 newSize);
 
 }

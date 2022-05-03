@@ -75,6 +75,11 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
 
     [Command(requiresAuthority = false)]
     void CmdResize(Vector2 newSize) {
+        ServerResize(newSize);
+    }
+
+    [Server]
+    public void ServerResize(Vector2 newSize) {
         spriteTrans.localScale = newSize;
         col.size = newSize;
         RpcResize(newSize);

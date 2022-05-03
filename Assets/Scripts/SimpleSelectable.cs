@@ -81,6 +81,11 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
 
     [Command(requiresAuthority = false)]
     void CmdResize(Vector2 newSize) {
+        ServerResize(newSize);
+    }
+
+    [Server]
+    public void ServerResize(Vector2 newSize) {
         transform.localScale = newSize;
         RpcResize(newSize);
     }

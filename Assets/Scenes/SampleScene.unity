@@ -3134,8 +3134,8 @@ MonoBehaviour:
   clientMaxMessagesPerTick: 1000
   batchSend: 1
   waitBeforeSend: 0
-  clientUseWss: 1
-  sslEnabled: 1
+  clientUseWss: 0
+  sslEnabled: 0
   sslCertJson: ./cert.json
   sslProtocols: 3072
   _logLevels: 0
@@ -3165,7 +3165,6 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 1227963756380754800, guid: 155c350dcf634124d849cab2291e923b, type: 3}
   - {fileID: 8848550492349679654, guid: 26bcd8e1c53bb5e4aac641d5811c855b, type: 3}
   - {fileID: 5847498469938651323, guid: b4277360e537b1f40a191af725cc25de, type: 3}
   - {fileID: 4574094122532319070, guid: 3a4315a1111099d4ab0572362c344a35, type: 3}
@@ -3173,6 +3172,7 @@ MonoBehaviour:
   - {fileID: 2875645275126272507, guid: bbe9b304557421e40a6215c2a58dc38d, type: 3}
   - {fileID: 3340364776736247953, guid: 7df773bfd3f44414fb0d933619ce57f6, type: 3}
   - {fileID: 7326320036574027947, guid: 8f0ba956a6e92fb4098059fe42bc3eb3, type: 3}
+  - {fileID: 2977645005696745377, guid: 20c1188caa86cdf4eb238e9c7a59aa5f, type: 3}
 --- !u!4 &567831962
 Transform:
   m_ObjectHideFlags: 0
@@ -9585,7 +9585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1753440891
 MonoBehaviour:
   m_ObjectHideFlags: 0

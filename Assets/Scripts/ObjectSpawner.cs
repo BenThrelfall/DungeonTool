@@ -26,7 +26,11 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
 
     [Command(requiresAuthority = false)]
     void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
+        ServerHandleSpawnRequest(spawnType, hash, position, rotation, scale);
+    }
 
+    [Server]
+    private void ServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
         GameObject spawnedObject;
 
         if (spawnType == SpawnType.playerToken) {
@@ -38,7 +42,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
         else if (spawnType == SpawnType.terrainBox) {
             spawnedObject = Instantiate(terrainBoxPrefab, position, rotation);
         }
-        else if(spawnType == SpawnType.map) {
+        else if (spawnType == SpawnType.map) {
             spawnedObject = Instantiate(mapPrefab, position, rotation);
         }
         else {
@@ -66,7 +70,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
     private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
         yield return null;
         yield return null;
-        selectable.ResizeNoSnapping(scale);
+        selectable.ServerResize(scale);
     }
 
     public void SpawnObject(SpawnType type, string hash) {
@@ -100,6 +104,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
 
     }
 
+    [Server]
     public void LoadFromSaveData(IEnumerable<SaveData> saveables) {
 
         DespawnAllSpawnedObjects();
@@ -107,7 +112,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
         if (saveables == null) return;
 
         foreach (var saveData in saveables) {
-            SpawnObject(saveData.ObjectType, saveData.SpriteHash, saveData.Position, Quaternion.identity, saveData.Scale);
+            ServerHandleSpawnRequest(saveData.ObjectType, saveData.SpriteHash, saveData.Position, Quaternion.identity, saveData.Scale);
         }
 
     }
