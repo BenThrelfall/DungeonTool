@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Tool for selecting board elements and acting upon selected elements
@@ -24,6 +25,9 @@ public class SelectTool : MonoBehaviour {
 
     [SerializeField]
     LayerMask mapLayerMask;
+
+    [SerializeField]
+    TextMeshProUGUI layerIndicator;
 
     [SerializeField]
     LayerMask tokenLayerMask;
@@ -82,6 +86,8 @@ public class SelectTool : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Insert)) {
             layerMask = mapMaskActive ? tokenLayerMask : mapLayerMask;
+            if (mapMaskActive) layerIndicator.text = "Token";
+            else layerIndicator.text = "Map";
             mapMaskActive = !mapMaskActive;
         }
 
