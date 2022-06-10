@@ -2433,6 +2433,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 567831961}
+  defaultRenderAsset: {fileID: 11400000, guid: 56e2064676fe860418c766bd36e17862, type: 2}
 --- !u!114 &413695593
 MonoBehaviour:
   m_ObjectHideFlags: 0

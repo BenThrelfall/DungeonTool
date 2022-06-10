@@ -2,13 +2,16 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class UILeaveGameButton : MonoBehaviour {
 
     [SerializeField]
     NetworkManager manager;
-    
+
+    [SerializeField]
+    RenderPipelineAsset defaultRenderAsset;
 
     public void LeaveGameClicked() {
 
@@ -24,8 +27,13 @@ public class UILeaveGameButton : MonoBehaviour {
             manager.StopServer();
         }
 
+        //Destroy network manager because a new one is created when the scene is reloaded
         Destroy(manager.gameObject);
 
+        //Reset renderpipeline
+        GraphicsSettings.renderPipelineAsset = defaultRenderAsset;
+
+        //Reload scene
         SceneManager.LoadScene(0);
 
     }
