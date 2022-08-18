@@ -76,6 +76,9 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
     public void SpawnObject(SpawnType type, string hash) {
         SpawnObject(type, hash, Vector3.zero, Quaternion.identity, Vector3.one);
     }
+    public void SpawnObject(SpawnType type, string hash, Vector3 position) {
+        SpawnObject(type, hash, position, Quaternion.identity, Vector3.one);
+    }
 
     public void SpawnObject(SpawnType type, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
         CmdServerHandleSpawnRequest(type, hash,position, rotation, scale);
