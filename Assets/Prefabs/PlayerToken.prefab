@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 3340364776736248016}
   - component: {fileID: 3340364776736248043}
   - component: {fileID: 7749170060227660004}
-  - component: {fileID: 1299213052142855660}
+  - component: {fileID: -2272314999410241008}
   m_Layer: 6
   m_Name: PlayerToken
   m_TagString: Untagged
@@ -409,7 +409,7 @@ MonoBehaviour:
   syncInterval: 0.1
   col: {fileID: 3340364776736248043}
   spriteTrans: {fileID: 6003124301883897169}
---- !u!114 &1299213052142855660
+--- !u!114 &-2272314999410241008
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -418,8 +418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3340364776736247953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece89c214f5618447bdd7d3764ecf1e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8eeae5455e9f9d441ac42de8e2514001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnType: 1
-  scaleTrans: {fileID: 6003124301883897169}

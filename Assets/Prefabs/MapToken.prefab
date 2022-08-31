@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1910080826122892549}
   - component: {fileID: 5181244447705444519}
   - component: {fileID: 9029196813751916142}
-  - component: {fileID: 895527617362480070}
+  - component: {fileID: -1098281298407373263}
   m_Layer: 14
   m_Name: MapToken
   m_TagString: Untagged
@@ -112,7 +112,7 @@ MonoBehaviour:
   syncInterval: 0.1
   col: {fileID: 5181244447705444519}
   spriteTrans: {fileID: 7066125420724404551}
---- !u!114 &895527617362480070
+--- !u!114 &-1098281298407373263
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,11 +121,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2977645005696745377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ece89c214f5618447bdd7d3764ecf1e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 8eeae5455e9f9d441ac42de8e2514001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnType: 3
-  scaleTrans: {fileID: 7066125420724404551}
 --- !u!1 &3374011234808746152
 GameObject:
   m_ObjectHideFlags: 0

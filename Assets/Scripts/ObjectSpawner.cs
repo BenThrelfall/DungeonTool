@@ -8,7 +8,7 @@ using static IObjectSpawner;
 /// <summary>
 /// Implementation of <c>IObjectSpawner</c>. Uses Commands to send requests between the client and the server
 /// </summary>
-public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager {
+public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [SerializeField]
     GameObject tokenPrefab;
@@ -30,7 +30,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
     }
 
     [Server]
-    private void ServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
+    private GameObject ServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
         GameObject spawnedObject;
 
         if (spawnType == SpawnType.playerToken) {
@@ -62,9 +62,11 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
             StartCoroutine(DelayResize(selectable, scale));
         }
 
-        if (spawnType == SpawnType.terrainBox) return;
+        if (spawnType == SpawnType.terrainBox) return spawnedObject;
         var spriteSync = spawnedObject.GetComponent<SyncedRuntimeSprite>();
         spriteSync.targetHash = hash;
+
+        return spawnedObject;
     }
 
     private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
@@ -94,37 +96,25 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
         NetworkServer.Destroy(gameObject);
     }
 
-    public IEnumerable<SaveData> GetActiveSaveData() {
-        List<SaveData> output = new List<SaveData>();
-
-        foreach (var gameObj in spawnedObjects) {
-            var save = gameObj.GetComponent<ISaveable>();
-            if (save == null) continue;
-            output.Add(save.SaveData);
-        }
-
-        return output;
-
-    }
 
     [Server]
-    public void LoadFromSaveData(IEnumerable<SaveData> saveables) {
+    public void SpawnFromObjectData(IEnumerable<ObjectSaveData> data) {
 
-        DespawnAllSpawnedObjects();
+        if (data == null) return;
 
-        if (saveables == null) return;
-
-        foreach (var saveData in saveables) {
-            ServerHandleSpawnRequest(saveData.ObjectType, saveData.SpriteHash, saveData.Position, Quaternion.identity, saveData.Scale);
+        foreach (var obj in data) {
+            ServerHandleSpawnRequest(obj.spawnType, "", obj.position, Quaternion.identity, obj.scale).GetComponent<SaveObject>().Load(obj);
         }
 
     }
 
-    private void DespawnAllSpawnedObjects() {
+    public void DespawnAllSpawnedObjects() {
         foreach (var gameObj in spawnedObjects) {
             NetworkServer.Destroy(gameObj);
         }
 
         spawnedObjects.Clear();
     }
+
+
 }
