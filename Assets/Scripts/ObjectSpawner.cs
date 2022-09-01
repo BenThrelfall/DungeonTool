@@ -25,6 +25,9 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
     [SerializeField]
     GameObject fogPrefab;
 
+    [SerializeField]
+    GameObject lightPrefab;
+
     List<GameObject> spawnedObjects = new List<GameObject>();
 
     [Command(requiresAuthority = false)]
@@ -67,6 +70,9 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
         }
         else if (spawnType == SpawnType.fog) {
             spawnedObject = Instantiate(fogPrefab);
+        }
+        else if (spawnType == SpawnType.light) {
+            spawnedObject = Instantiate(lightPrefab);
         }
         else {
             throw new NotImplementedException();

@@ -3198,6 +3198,7 @@ MonoBehaviour:
   - {fileID: 3340364776736247953, guid: 7df773bfd3f44414fb0d933619ce57f6, type: 3}
   - {fileID: 7326320036574027947, guid: 8f0ba956a6e92fb4098059fe42bc3eb3, type: 3}
   - {fileID: 2977645005696745377, guid: 20c1188caa86cdf4eb238e9c7a59aa5f, type: 3}
+  - {fileID: 5951173247147224105, guid: 668bcf69668ca4448bed00e77966568b, type: 3}
 --- !u!4 &567831962
 Transform:
   m_ObjectHideFlags: 0
@@ -3642,6 +3643,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 29
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &650954238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 650954240}
+  - component: {fileID: 650954239}
+  m_Layer: 0
+  m_Name: AddLightService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &650954239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650954238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade437bbf74839f49ae6e0d193085112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 519420031}
+--- !u!4 &650954240
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650954238}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.7090569, y: 1.4716332, z: -21.438562}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 42
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &659446861
 GameObject:
@@ -6717,6 +6762,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941579895}
   m_CullTransparentMesh: 1
+--- !u!1 &948469242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 948469243}
+  - component: {fileID: 948469244}
+  m_Layer: 0
+  m_Name: AddLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &948469243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948469242}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 41
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &948469244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 948469242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5740bcc2d6bf01449a58aa5eecd5f56e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addLightTool: {fileID: 650954239}
 --- !u!1 &969971462
 GameObject:
   m_ObjectHideFlags: 0
@@ -6946,6 +7035,7 @@ MonoBehaviour:
   fogTool: {fileID: 213104267}
   terrainBox: {fileID: 1753440890}
   terrainLine: {fileID: 241482959}
+  addLight: {fileID: 948469242}
   permTools: {fileID: 2029238696}
   toolUIObjects:
   - {fileID: 1457296457}
@@ -10676,6 +10766,7 @@ MonoBehaviour:
   terrainBoxPrefab: {fileID: 7326320036574027947, guid: 8f0ba956a6e92fb4098059fe42bc3eb3, type: 3}
   mapPrefab: {fileID: 2977645005696745377, guid: 20c1188caa86cdf4eb238e9c7a59aa5f, type: 3}
   fogPrefab: {fileID: 2875645275126272507, guid: bbe9b304557421e40a6215c2a58dc38d, type: 3}
+  lightPrefab: {fileID: 5951173247147224105, guid: 668bcf69668ca4448bed00e77966568b, type: 3}
 --- !u!4 &1962087885
 Transform:
   m_ObjectHideFlags: 0

@@ -10,7 +10,8 @@ public enum DungTool {
     CircleRuler,
     Fog,
     TerrainBox,
-    TerrainLine
+    TerrainLine,
+    AddLight
 }
 
 /// <summary>
