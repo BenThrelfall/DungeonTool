@@ -124,6 +124,7 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
         Vector3 size = JsonConvert.DeserializeObject<Vector3>(data.Json);
         spriteTrans.localScale = size;
         col.size = size;
+        
     }
 }
 

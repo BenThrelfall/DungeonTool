@@ -25,10 +25,6 @@ public class SaveObject : MonoBehaviour {
 
     public void Load(ObjectSaveData data) {
 
-        transform.position = data.position;
-        transform.rotation = Quaternion.Euler(data.rotation);
-        transform.localScale = data.scale;
-
         List<ISaveComp> comps = gameObject.GetInterfaces<ISaveComp>().ToList();
 
         foreach (var item in data.componentData) {

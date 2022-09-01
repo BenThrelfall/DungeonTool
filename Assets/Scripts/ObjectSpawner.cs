@@ -27,12 +27,18 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
     [Command(requiresAuthority = false)]
     void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
 
+        List<CompSaveData> compSaveDatas = new List<CompSaveData>();
+
+        if (string.IsNullOrEmpty(hash) == false) {
+            compSaveDatas.Add(new CompSaveData(CompType.SyncedRuntimeSprite) { Json = $"{hash}" });
+        }
+
         ObjectSaveData data = new ObjectSaveData() {
             spawnType = spawnType,
             position = position,
             rotation = rotation.eulerAngles,
             scale = scale,
-            componentData = new List<CompSaveData>() { new CompSaveData(CompType.SyncedRuntimeSprite) { Json = $"{hash}"} }
+            componentData = compSaveDatas
         };
 
         ServerHandleSpawnRequest(data);
@@ -59,6 +65,10 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
         else {
             throw new NotImplementedException();
         }
+
+        spawnedObject.transform.position = objData.position;
+        spawnedObject.transform.rotation = Quaternion.Euler(objData.rotation);
+        spawnedObject.transform.localScale = objData.scale;
 
         spawnedObjects.Add(spawnedObject);
         NetworkServer.Spawn(spawnedObject);
