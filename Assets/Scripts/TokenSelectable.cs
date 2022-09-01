@@ -1,10 +1,12 @@
 using Mirror;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependancy {
+public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependancy, ISaveComp {
     public Bounds ObjectBounds => col.bounds;
+    public CompType ComponentType => CompType.TokenSelectable;
 
     [SerializeField]
     BoxCollider2D col;
@@ -110,6 +112,18 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         spawner = serviceCollection.GetService<IObjectSpawner>();
+    }
+
+    public CompSaveData Save() {
+        return new CompSaveData(ComponentType) {
+            Json = JsonConvert.SerializeObject(spriteTrans.localScale)
+        };
+    }
+
+    public void Load(CompSaveData data) {
+        Vector3 size = JsonConvert.DeserializeObject<Vector3>(data.Json);
+        spriteTrans.localScale = size;
+        col.size = size;
     }
 }
 

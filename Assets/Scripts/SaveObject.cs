@@ -29,10 +29,12 @@ public class SaveObject : MonoBehaviour {
         transform.rotation = Quaternion.Euler(data.rotation);
         transform.localScale = data.scale;
 
-        var comps = gameObject.GetInterfaces<ISaveComp>().ToList();
+        List<ISaveComp> comps = gameObject.GetInterfaces<ISaveComp>().ToList();
 
-        for (int i = 0; i < comps.Count; i++) {
-            comps[i].Load(data.componentData[i]);
+        foreach (var item in data.componentData) {
+            var comp = comps.First(x => x.ComponentType == item.compType);
+            comp.Load(item);
+            comps.Remove(comp);
         }
     }
 

@@ -23,6 +23,8 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy, ISaveC
     [SerializeField]
     bool dontAutoDependancies;
 
+    public CompType ComponentType => CompType.SyncedRuntimeSprite;
+
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         spriteCollection = serviceCollection.GetService<ISpriteCollection>();
 
@@ -68,7 +70,7 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy, ISaveC
     }
 
     public CompSaveData Save() {
-        CompSaveData output = new CompSaveData() {
+        CompSaveData output = new CompSaveData(ComponentType) {
             Json = $"{targetHash}"
         };
 

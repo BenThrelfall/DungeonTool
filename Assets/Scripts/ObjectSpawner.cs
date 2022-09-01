@@ -26,47 +26,47 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [Command(requiresAuthority = false)]
     void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
-        ServerHandleSpawnRequest(spawnType, hash, position, rotation, scale);
+
+        ObjectSaveData data = new ObjectSaveData() {
+            spawnType = spawnType,
+            position = position,
+            rotation = rotation.eulerAngles,
+            scale = scale,
+            componentData = new List<CompSaveData>() { new CompSaveData(CompType.SyncedRuntimeSprite) { Json = $"{hash}"} }
+        };
+
+        ServerHandleSpawnRequest(data);
     }
 
     [Server]
-    private GameObject ServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
+    private GameObject ServerHandleSpawnRequest(ObjectSaveData objData) {
         GameObject spawnedObject;
 
+        SpawnType spawnType = objData.spawnType;
+
         if (spawnType == SpawnType.playerToken) {
-            spawnedObject = Instantiate(playerTokenPrefab, position, rotation);
+            spawnedObject = Instantiate(playerTokenPrefab);
         }
         else if (spawnType == SpawnType.token) {
-            spawnedObject = Instantiate(tokenPrefab, position, rotation);
+            spawnedObject = Instantiate(tokenPrefab);
         }
         else if (spawnType == SpawnType.terrainBox) {
-            spawnedObject = Instantiate(terrainBoxPrefab, position, rotation);
+            spawnedObject = Instantiate(terrainBoxPrefab);
         }
         else if (spawnType == SpawnType.map) {
-            spawnedObject = Instantiate(mapPrefab, position, rotation);
+            spawnedObject = Instantiate(mapPrefab);
         }
         else {
             throw new NotImplementedException();
         }
 
         spawnedObjects.Add(spawnedObject);
+        NetworkServer.Spawn(spawnedObject);
 
-        ISelectable selectable = spawnedObject.GetComponent<ISelectable>();
-
-        if (selectable == null) {
-            spawnedObject.transform.localScale = scale;
-            NetworkServer.Spawn(spawnedObject);
-        }
-        else {
-            NetworkServer.Spawn(spawnedObject);
-            StartCoroutine(DelayResize(selectable, scale));
-        }
-
-        if (spawnType == SpawnType.terrainBox) return spawnedObject;
-        var spriteSync = spawnedObject.GetComponent<SyncedRuntimeSprite>();
-        spriteSync.targetHash = hash;
+        spawnedObject.GetComponent<SaveObject>().Load(objData);
 
         return spawnedObject;
+
     }
 
     private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
@@ -103,7 +103,7 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
         if (data == null) return;
 
         foreach (var obj in data) {
-            ServerHandleSpawnRequest(obj.spawnType, "", obj.position, Quaternion.identity, obj.scale).GetComponent<SaveObject>().Load(obj);
+            ServerHandleSpawnRequest(obj);
         }
 
     }
