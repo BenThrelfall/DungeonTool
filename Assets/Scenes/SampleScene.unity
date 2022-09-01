@@ -973,7 +973,6 @@ GameObject:
   m_Component:
   - component: {fileID: 169688799}
   - component: {fileID: 169688798}
-  - component: {fileID: 169688797}
   m_Layer: 0
   m_Name: FogService
   m_TagString: Untagged
@@ -981,23 +980,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &169688797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 169688796}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 1382853078
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 
-  hasSpawned: 0
 --- !u!114 &169688798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,8 +992,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cdbeb4541d69e84c81d66097fbca503, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   mainCamera: {fileID: 519420031}
   fogIndicator: {fileID: 815496221}
   fogLayerMask:
