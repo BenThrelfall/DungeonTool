@@ -14,7 +14,8 @@ public interface IObjectSpawner {
         token,
         playerToken,
         terrainBox,
-        map
+        map,
+        fog
     }
 
     /// <summary>

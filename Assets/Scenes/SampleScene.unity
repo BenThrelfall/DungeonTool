@@ -1013,7 +1013,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   mainCamera: {fileID: 519420031}
-  fogPrefab: {fileID: 2875645275126272507, guid: bbe9b304557421e40a6215c2a58dc38d, type: 3}
   fogIndicator: {fileID: 815496221}
   fogLayerMask:
     serializedVersion: 2
@@ -10696,6 +10695,7 @@ MonoBehaviour:
   playerTokenPrefab: {fileID: 3340364776736247953, guid: 7df773bfd3f44414fb0d933619ce57f6, type: 3}
   terrainBoxPrefab: {fileID: 7326320036574027947, guid: 8f0ba956a6e92fb4098059fe42bc3eb3, type: 3}
   mapPrefab: {fileID: 2977645005696745377, guid: 20c1188caa86cdf4eb238e9c7a59aa5f, type: 3}
+  fogPrefab: {fileID: 2875645275126272507, guid: bbe9b304557421e40a6215c2a58dc38d, type: 3}
 --- !u!4 &1962087885
 Transform:
   m_ObjectHideFlags: 0
