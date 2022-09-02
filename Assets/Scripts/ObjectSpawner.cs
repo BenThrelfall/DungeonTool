@@ -91,11 +91,6 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     }
 
-    private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
-        yield return null;
-        yield return null;
-        selectable.ServerResize(scale);
-    }
 
     public void SpawnObject(SpawnType type, string hash) {
         SpawnObject(type, hash, Vector3.zero, Quaternion.identity, Vector3.one);

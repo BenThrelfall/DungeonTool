@@ -99,4 +99,11 @@ public class CircleRuler : NetworkBehaviour, ISelectable {
         return;
     }
 
+    public void IncreaseLight() {
+        return;
+    }
+
+    public void DecreaseLight() {
+        return;
+    }
 }

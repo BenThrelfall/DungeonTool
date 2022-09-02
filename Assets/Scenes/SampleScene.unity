@@ -2190,6 +2190,9 @@ MonoBehaviour:
   mapLayerMask:
     serializedVersion: 2
     m_Bits: 16384
+  lightLayerMask:
+    serializedVersion: 2
+    m_Bits: 131072
   layerIndicator: {fileID: 1743523225}
   tokenLayerMask:
     serializedVersion: 2

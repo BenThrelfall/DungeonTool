@@ -17,6 +17,9 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
 
     IObjectSpawner spawner;
 
+    [SerializeField]
+    VisionPerciever lightComp;
+
     private void Start() {
         officalPos = transform.position;
         SetUpDependancies(DependancyInjector.instance.Services);
@@ -125,6 +128,24 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
         spriteTrans.localScale = size;
         col.size = size;
         
+    }
+
+    public void IncreaseLight() {
+        CmdChangeLightDistance(1);
+    }
+
+    public void DecreaseLight() {
+        CmdChangeLightDistance(-1);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdChangeLightDistance(float delta) {
+        RpcChangeLightDistance(delta);
+    }
+
+    [ClientRpc]
+    void RpcChangeLightDistance(float delta) {
+        lightComp.ChangeViewDistance(delta);
     }
 }
 

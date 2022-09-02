@@ -21,8 +21,8 @@ TagManager:
   - AlwaysInFront
   - MapSelectable
   - Light
-  - 
-  - 
+  - DMOnly
+  - LightSelectable
   - 
   - 
   - 

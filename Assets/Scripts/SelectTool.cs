@@ -27,12 +27,15 @@ public class SelectTool : MonoBehaviour {
     LayerMask mapLayerMask;
 
     [SerializeField]
+    LayerMask lightLayerMask;
+
+    [SerializeField]
     TextMeshProUGUI layerIndicator;
 
     [SerializeField]
     LayerMask tokenLayerMask;
 
-    bool mapMaskActive = false;
+    int activeLayerMask = 0;
 
     [SerializeField]
     GameObject selectObject;
@@ -84,16 +87,51 @@ public class SelectTool : MonoBehaviour {
             UpSizeSelectedItems();
         }
 
+        if (Input.GetKeyDown(KeyCode.RightBracket)) {
+            IncreaseLightOnSelectedItems();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftBracket)) {
+            DecreaseLightOnSelectedItems();
+        }
+
         if (Input.GetKeyDown(KeyCode.Insert)) {
-            layerMask = mapMaskActive ? tokenLayerMask : mapLayerMask;
-            if (mapMaskActive) layerIndicator.text = "Token";
-            else layerIndicator.text = "Map";
-            mapMaskActive = !mapMaskActive;
+
+            activeLayerMask = (activeLayerMask + 1) % 3;
+
+            switch (activeLayerMask) {
+                case 0:
+                    layerMask = tokenLayerMask;
+                    layerIndicator.text = "Token";
+                    break;
+                case 1:
+                    layerMask = mapLayerMask;
+                    layerIndicator.text = "Map";
+                    break;
+                case 2:
+                    layerMask = lightLayerMask;
+                    layerIndicator.text = "Light";
+                    break;
+                default:
+                    break;
+            }
         }
 
         if (Input.GetMouseButtonUp(0)) {
             mode = SelectMode.None;
             dragArea.SetActive(false);
+        }
+    }
+
+    private void DecreaseLightOnSelectedItems() {
+        foreach (var item in selectedObjects) {
+            item.DecreaseLight();
+        }
+    }
+
+    private void IncreaseLightOnSelectedItems() {
+        foreach (var item in selectedObjects) {
+            item.IncreaseLight();
         }
     }
 

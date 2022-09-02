@@ -10,7 +10,7 @@ public class SaveObject : MonoBehaviour {
 
     public ObjectSaveData Save() {
 
-        List<CompSaveData> componentData = gameObject.GetInterfaces<ISaveComp>().Select(x => x.Save()).ToList();
+        List<CompSaveData> componentData = gameObject.GetInterfacesInChildren<ISaveComp>().Select(x => x.Save()).ToList();
 
         ObjectSaveData output = new ObjectSaveData() {
             spawnType = spawnType,
@@ -25,7 +25,7 @@ public class SaveObject : MonoBehaviour {
 
     public void Load(ObjectSaveData data) {
 
-        List<ISaveComp> comps = gameObject.GetInterfaces<ISaveComp>().ToList();
+        List<ISaveComp> comps = gameObject.GetInterfacesInChildren<ISaveComp>().ToList();
 
         foreach (var item in data.componentData) {
             var comp = comps.First(x => x.ComponentType == item.compType);

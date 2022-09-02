@@ -6,7 +6,9 @@ using UnityEngine;
 public enum CompType {
     SyncedRuntimeSprite,
     TokenSelectable,
-    DebugSaveComp
+    DebugSaveComp,
+    LightSelectable,
+    VisionPerc
 }
 
 public class CompSaveData {
