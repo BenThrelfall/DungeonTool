@@ -1347,6 +1347,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   dmRenderAsset: {fileID: 11400000, guid: ba1bfa426162a594b91afb735a6a240e, type: 2}
+  playerRenderAsset: {fileID: 11400000, guid: 4c0a299c531a886499e84b17d0398fdd, type: 2}
   dmObjects:
   - {fileID: 1178605908}
   - {fileID: 1901151208}
