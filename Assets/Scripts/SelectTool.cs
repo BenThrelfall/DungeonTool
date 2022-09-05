@@ -136,6 +136,10 @@ public class SelectTool : MonoBehaviour {
             selectObject.transform.position = selectionBounds.center;
             selectRenderer.size = new Vector2(selectionBounds.size.x, selectionBounds.size.y);
             foreach (var item in selectedObjects) {
+                if (item.Equals(null)) {
+                    Deselect(item);
+                    break;
+                }
                 item.DragPosition(diff);
             }
         }
