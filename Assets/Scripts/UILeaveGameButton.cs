@@ -10,9 +10,6 @@ public class UILeaveGameButton : MonoBehaviour {
     [SerializeField]
     NetworkManager manager;
 
-    [SerializeField]
-    RenderPipelineAsset defaultRenderAsset;
-
     public void LeaveGameClicked() {
 
         if (NetworkServer.active && NetworkClient.isConnected) { 
@@ -29,9 +26,6 @@ public class UILeaveGameButton : MonoBehaviour {
 
         //Destroy network manager because a new one is created when the scene is reloaded
         Destroy(manager.gameObject);
-
-        //Reset renderpipeline
-        GraphicsSettings.renderPipelineAsset = defaultRenderAsset;
 
         //Reload scene
         SceneManager.LoadScene(0);
