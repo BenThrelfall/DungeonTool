@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rayCount: 100
   viewDistance: 8
-  extraAmount: 0.4
+  extraAmount: 0
   visionLayerMask:
     serializedVersion: 2
     m_Bits: 2048

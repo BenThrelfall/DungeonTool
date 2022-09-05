@@ -1,5 +1,6 @@
 using Mirror;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
     public override void OnStartClient() {
         base.OnStartClient();
 
-        CmdFetchScale();
+        CmdInitalSync();
     }
 
     public void Delete() {
@@ -97,14 +98,15 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdFetchScale(NetworkConnectionToClient sender = null) {
-        TargetSetScale(sender, spriteTrans.localScale);
+    public void CmdInitalSync(NetworkConnectionToClient sender = null) {
+        TargetInitalSync(sender, spriteTrans.localScale, lightComp.viewDistance);
     }
 
     [TargetRpc]
-    public void TargetSetScale(NetworkConnection target, Vector3 scale) {
+    public void TargetInitalSync(NetworkConnection target, Vector3 scale, float viewDistance) {
         spriteTrans.localScale = scale;
         col.size = scale;
+        lightComp.viewDistance = viewDistance;
     }
 
     [ClientRpc]
@@ -119,15 +121,21 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
 
     public CompSaveData Save() {
         return new CompSaveData(ComponentType) {
-            Json = JsonConvert.SerializeObject(spriteTrans.localScale)
+            Json = JsonConvert.SerializeObject((spriteTrans.localScale, lightComp.viewDistance))
         };
     }
 
     public void Load(CompSaveData data) {
-        Vector3 size = JsonConvert.DeserializeObject<Vector3>(data.Json);
-        spriteTrans.localScale = size;
-        col.size = size;
-        
+        (Vector3, float) deserializedData = JsonConvert.DeserializeObject<(Vector3, float)>(data.Json);
+        spriteTrans.localScale = deserializedData.Item1;
+        col.size = deserializedData.Item1;
+        lightComp.viewDistance = deserializedData.Item2;
+        RpcSetLightSize(deserializedData.Item2);
+    }
+
+    [ClientRpc]
+    private void RpcSetLightSize(float distance) {
+        lightComp.viewDistance = distance;
     }
 
     public void IncreaseLight() {

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VisionPerciever : MonoBehaviour, IRequiresDependancy, ISaveComp {
+public class VisionPerciever : MonoBehaviour, IRequiresDependancy {
 
     public int rayCount;
-    [SerializeField] float viewDistance;
+    public float viewDistance;
     public float extraAmount = 1f;
     public LayerMask visionLayerMask;
 
@@ -47,11 +47,13 @@ public class VisionPerciever : MonoBehaviour, IRequiresDependancy, ISaveComp {
 
     private void UpdateVision() {
 
+
         Mesh mesh = new Mesh();
         Mesh extraMesh = new Mesh();
-        Mesh memoryMesh = new Mesh();
         meshFilter.mesh = mesh;
         extraMeshFilter.mesh = extraMesh;
+
+        if (viewDistance == 0) return;
 
         Vector3[] extraVertices = new Vector3[rayCount * 2 + 2];
         Vector2[] extraUvs = new Vector2[extraVertices.Length];
@@ -146,13 +148,4 @@ public class VisionPerciever : MonoBehaviour, IRequiresDependancy, ISaveComp {
         visionEventHandler = serviceCollection.GetService<IVisionUpdateEventHandler>();
     }
 
-    public CompSaveData Save() {
-        return new CompSaveData(ComponentType) {
-            Json = JsonConvert.SerializeObject(viewDistance)
-        };
-    }
-
-    public void Load(CompSaveData data) {
-        viewDistance = JsonConvert.DeserializeObject<float>(data.Json);
-    }
 }

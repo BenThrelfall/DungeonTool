@@ -1,5 +1,6 @@
 using Mirror;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,11 +75,20 @@ public class LightSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
     }
 
     public CompSaveData Save() {
-        return new CompSaveData(ComponentType) { Json = "" };
+        return new CompSaveData(ComponentType) {
+            Json = JsonConvert.SerializeObject(lightComp.viewDistance)
+        };
     }
 
     public void Load(CompSaveData data) {
-        return;
+        float distance = JsonConvert.DeserializeObject<float>(data.Json);
+        lightComp.viewDistance = distance;
+        RpcSetLightDistance(distance);
+    }
+
+    [ClientRpc]
+    private void RpcSetLightDistance(float distance) {
+        lightComp.viewDistance = distance;
     }
 
     public void IncreaseLight() {
