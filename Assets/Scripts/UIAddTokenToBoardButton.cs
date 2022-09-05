@@ -15,12 +15,15 @@ public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
     /// </summary>
     public string tokenHash;
 
+    Camera mainCamera;
+
     IObjectSpawner spawner;
     
     [SerializeField]
     bool dontAutoDependancies;
 
     private void Start() {
+        mainCamera = Camera.main;
         if (dontAutoDependancies == false) SetUpDependancies(DependancyInjector.instance.Services);
     }
 
@@ -29,14 +32,18 @@ public class UIAddTokenToBoardButton : MonoBehaviour, IRequiresDependancy {
     /// assigned to this behavour instance.
     /// </summary>
     public void OnClick() {
+
+        Vector3 middleOfScreen = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 10));
+        Vector3 roundedMiddle = new Vector3(Mathf.RoundToInt(middleOfScreen.x), Mathf.RoundToInt(middleOfScreen.y), Mathf.RoundToInt(middleOfScreen.z));
+
         if (Input.GetKey(KeyCode.LeftShift)) {
-            spawner.SpawnObject(IObjectSpawner.SpawnType.playerToken, tokenHash);
+            spawner.SpawnObject(IObjectSpawner.SpawnType.playerToken, tokenHash, roundedMiddle);
         }
         else if (Input.GetKey(KeyCode.LeftControl)) {
-            spawner.SpawnObject(IObjectSpawner.SpawnType.map, tokenHash);
+            spawner.SpawnObject(IObjectSpawner.SpawnType.map, tokenHash, roundedMiddle);
         }
         else {
-            spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash);
+            spawner.SpawnObject(IObjectSpawner.SpawnType.token, tokenHash, roundedMiddle);
         }
     }
 

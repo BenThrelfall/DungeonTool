@@ -20,6 +20,12 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
         SetUpDependancies(DependancyInjector.instance.Services);
     }
 
+    public override void OnStartClient() {
+        base.OnStartClient();
+
+        CmdFetchScale();
+    }
+
     public void Delete() {
         spawner.DespawnObject(gameObject);
     }
@@ -83,6 +89,17 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
         spriteTrans.localScale = newSize;
         col.size = newSize;
         RpcResize(newSize);
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdFetchScale(NetworkConnectionToClient sender = null) {
+        TargetSetScale(sender, spriteTrans.localScale);
+    }
+
+    [TargetRpc]
+    public void TargetSetScale(NetworkConnection target, Vector3 scale) {
+        spriteTrans.localScale = scale;
+        col.size = scale;
     }
 
     [ClientRpc]

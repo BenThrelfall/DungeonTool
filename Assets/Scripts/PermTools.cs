@@ -37,17 +37,17 @@ public class PermTools : MonoBehaviour, IRequiresDependancy {
 
     private void CameraDragInputs() {
 
-        if (Input.GetMouseButtonDown(2)) {
+        if (Input.GetMouseButtonDown(2) || Input.GetKeyDown(KeyCode.Space)) {
             mouseStartPoint = MousePos();
             limiter.StartActivity();
         }
 
-        if (Input.GetMouseButton(2)) {
+        if (Input.GetMouseButton(2) || Input.GetKey(KeyCode.Space)) {
             var diff = MousePos() - mouseStartPoint;
             cameraTransform.Translate(-diff);
         }
 
-        if (Input.GetMouseButtonUp(2)) {
+        if (Input.GetMouseButtonUp(2) || Input.GetKeyUp(KeyCode.Space)) {
             limiter.StopActivity();
         }
 
