@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2875645275126272504}
   - component: {fileID: 7878834843606252307}
   - component: {fileID: 7954060997146014226}
+  - component: {fileID: -5947958581814606358}
   m_Layer: 12
   m_Name: Fog
   m_TagString: Untagged
@@ -127,3 +128,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &-5947958581814606358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2875645275126272507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eeae5455e9f9d441ac42de8e2514001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnType: 4

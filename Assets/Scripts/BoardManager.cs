@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy {
 
@@ -14,7 +15,7 @@ public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy
     string boardsFile;
     string boardsFolder;
 
-    ISaveablesManager saveManager;
+    IObjectSpawner objectSpawner;
     ISpriteCollection spriteCollection;
 
     public event Action<int> boardsUpdated;
@@ -107,11 +108,11 @@ public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy
 
         if (activeBoard < 0) return;
 
-        var saveables = saveManager.GetActiveSaveData();
         string boardFile = boards[activeBoard];
 
-        SaveData[] saveCollection = saveables.ToArray();
-        string json = JsonHelper.ToJson<SaveData>(saveCollection);
+        SaveObject[] saveObjects = FindObjectsOfType<SaveObject>();
+        ObjectSaveData[] saveCollection = saveObjects.Select(x => x.Save()).ToArray();
+        string json = JsonConvert.SerializeObject(saveCollection);
         File.WriteAllText(boardFile, json);
     }
 
@@ -119,21 +120,19 @@ public class BoardManager : NetworkBehaviour, IBoardManager, IRequiresDependancy
     void LoadBoard(int boardIndex) {
         activeBoard = boardIndex;
 
+        objectSpawner.DespawnAllSpawnedObjects();
+
         string boardFile = boards[boardIndex];
         string json = File.ReadAllText(boardFile);
         if (string.IsNullOrEmpty(json)) return;
-        var savables = JsonHelper.FromJson<SaveData>(json);
-        saveManager.LoadFromSaveData(savables);
+        var savables = JsonConvert.DeserializeObject<ObjectSaveData[]>(json);
 
-        HashSet<string> hashes = new HashSet<string>(savables.Select(x => x.SpriteHash));
-        foreach (var hash in hashes) {
-            spriteCollection.LoadSpriteFromStorage(hash);
-        }
+        objectSpawner.SpawnFromObjectData(savables);
 
     }
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
-        saveManager = serviceCollection.GetService<ISaveablesManager>();
+        objectSpawner = serviceCollection.GetService<IObjectSpawner>();
         spriteCollection = serviceCollection.GetService<ISpriteCollection>();
     }
 

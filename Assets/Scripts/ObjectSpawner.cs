@@ -8,7 +8,7 @@ using static IObjectSpawner;
 /// <summary>
 /// Implementation of <c>IObjectSpawner</c>. Uses Commands to send requests between the client and the server
 /// </summary>
-public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager {
+public class ObjectSpawner : NetworkBehaviour, IObjectSpawner {
 
     [SerializeField]
     GameObject tokenPrefab;
@@ -22,56 +22,75 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
     [SerializeField]
     GameObject mapPrefab;
 
+    [SerializeField]
+    GameObject fogPrefab;
+
+    [SerializeField]
+    GameObject lightPrefab;
+
     List<GameObject> spawnedObjects = new List<GameObject>();
 
     [Command(requiresAuthority = false)]
     void CmdServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
-        ServerHandleSpawnRequest(spawnType, hash, position, rotation, scale);
+
+        List<CompSaveData> compSaveDatas = new List<CompSaveData>();
+
+        if (string.IsNullOrEmpty(hash) == false) {
+            compSaveDatas.Add(new CompSaveData(CompType.SyncedRuntimeSprite) { Json = $"{hash}" });
+        }
+
+        ObjectSaveData data = new ObjectSaveData() {
+            spawnType = spawnType,
+            position = position,
+            rotation = rotation.eulerAngles,
+            scale = scale,
+            componentData = compSaveDatas
+        };
+
+        ServerHandleSpawnRequest(data);
     }
 
     [Server]
-    private void ServerHandleSpawnRequest(SpawnType spawnType, string hash, Vector3 position, Quaternion rotation, Vector3 scale) {
+    private GameObject ServerHandleSpawnRequest(ObjectSaveData objData) {
         GameObject spawnedObject;
 
+        SpawnType spawnType = objData.spawnType;
+
         if (spawnType == SpawnType.playerToken) {
-            spawnedObject = Instantiate(playerTokenPrefab, position, rotation);
+            spawnedObject = Instantiate(playerTokenPrefab);
         }
         else if (spawnType == SpawnType.token) {
-            spawnedObject = Instantiate(tokenPrefab, position, rotation);
+            spawnedObject = Instantiate(tokenPrefab);
         }
         else if (spawnType == SpawnType.terrainBox) {
-            spawnedObject = Instantiate(terrainBoxPrefab, position, rotation);
+            spawnedObject = Instantiate(terrainBoxPrefab);
         }
         else if (spawnType == SpawnType.map) {
-            spawnedObject = Instantiate(mapPrefab, position, rotation);
+            spawnedObject = Instantiate(mapPrefab);
+        }
+        else if (spawnType == SpawnType.fog) {
+            spawnedObject = Instantiate(fogPrefab);
+        }
+        else if (spawnType == SpawnType.light) {
+            spawnedObject = Instantiate(lightPrefab);
         }
         else {
             throw new NotImplementedException();
         }
 
+        spawnedObject.transform.position = objData.position;
+        spawnedObject.transform.rotation = Quaternion.Euler(objData.rotation);
+        spawnedObject.transform.localScale = objData.scale;
+
         spawnedObjects.Add(spawnedObject);
+        NetworkServer.Spawn(spawnedObject);
 
-        ISelectable selectable = spawnedObject.GetComponent<ISelectable>();
+        spawnedObject.GetComponent<SaveObject>().Load(objData);
 
-        if (selectable == null) {
-            spawnedObject.transform.localScale = scale;
-            NetworkServer.Spawn(spawnedObject);
-        }
-        else {
-            NetworkServer.Spawn(spawnedObject);
-            StartCoroutine(DelayResize(selectable, scale));
-        }
+        return spawnedObject;
 
-        if (spawnType == SpawnType.terrainBox) return;
-        var spriteSync = spawnedObject.GetComponent<SyncedRuntimeSprite>();
-        spriteSync.targetHash = hash;
     }
 
-    private IEnumerator DelayResize(ISelectable selectable, Vector2 scale) {
-        yield return null;
-        yield return null;
-        selectable.ServerResize(scale);
-    }
 
     public void SpawnObject(SpawnType type, string hash) {
         SpawnObject(type, hash, Vector3.zero, Quaternion.identity, Vector3.one);
@@ -94,37 +113,25 @@ public class ObjectSpawner : NetworkBehaviour, IObjectSpawner, ISaveablesManager
         NetworkServer.Destroy(gameObject);
     }
 
-    public IEnumerable<SaveData> GetActiveSaveData() {
-        List<SaveData> output = new List<SaveData>();
-
-        foreach (var gameObj in spawnedObjects) {
-            var save = gameObj.GetComponent<ISaveable>();
-            if (save == null) continue;
-            output.Add(save.SaveData);
-        }
-
-        return output;
-
-    }
 
     [Server]
-    public void LoadFromSaveData(IEnumerable<SaveData> saveables) {
+    public void SpawnFromObjectData(IEnumerable<ObjectSaveData> data) {
 
-        DespawnAllSpawnedObjects();
+        if (data == null) return;
 
-        if (saveables == null) return;
-
-        foreach (var saveData in saveables) {
-            ServerHandleSpawnRequest(saveData.ObjectType, saveData.SpriteHash, saveData.Position, Quaternion.identity, saveData.Scale);
+        foreach (var obj in data) {
+            ServerHandleSpawnRequest(obj);
         }
 
     }
 
-    private void DespawnAllSpawnedObjects() {
+    public void DespawnAllSpawnedObjects() {
         foreach (var gameObj in spawnedObjects) {
             NetworkServer.Destroy(gameObj);
         }
 
         spawnedObjects.Clear();
     }
+
+
 }

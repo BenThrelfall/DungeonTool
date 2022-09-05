@@ -38,6 +38,9 @@ public class ToolManager : NetworkBehaviour, IToolManager {
     GameObject terrainLine;
 
     [SerializeField]
+    GameObject addLight;
+
+    [SerializeField]
     GameObject permTools;
 
     [SerializeField]
@@ -60,6 +63,7 @@ public class ToolManager : NetworkBehaviour, IToolManager {
         tools.Add(DungTool.Fog, fogTool);
         tools.Add(DungTool.TerrainBox, terrainBox);
         tools.Add(DungTool.TerrainLine, terrainLine);
+        tools.Add(DungTool.AddLight, addLight);
     }
 
     public void SwitchToTool(DungTool tool) {

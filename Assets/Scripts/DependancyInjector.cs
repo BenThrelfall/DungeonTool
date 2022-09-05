@@ -71,7 +71,6 @@ public class DependancyInjector : MonoBehaviour {
         services.AddService<IFrameRateLimiter>(rateLimiter);
         services.AddService<IToolManager>(toolManager);
         services.AddService<IVisionUpdateEventHandler>(visionEventHandler);
-        services.AddService<ISaveablesManager>(spawner);
         services.AddService<IBoardManager>(boardManager);
 
         return services;

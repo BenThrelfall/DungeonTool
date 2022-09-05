@@ -1,16 +1,14 @@
-using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FogTool : NetworkBehaviour {
+public class FogTool : MonoBehaviour, IRequiresDependancy {
+
+    IObjectSpawner objectSpawner;
 
     [SerializeField]
     Camera mainCamera;
-
-    [SerializeField]
-    GameObject fogPrefab;
 
     [SerializeField]
     GameObject fogIndicator;
@@ -56,25 +54,19 @@ public class FogTool : NetworkBehaviour {
 
         if (hit.collider is null) return;
 
-        CmdDestroyFog(hit.collider.gameObject);
+        objectSpawner.DespawnObject(hit.collider.gameObject);
     }
 
-    [Command(requiresAuthority = false)]
-    void CmdDestroyFog(GameObject fog) {
-        NetworkServer.Destroy(fog);
 
-    }
-
-    [Command(requiresAuthority = false)]
     void SpawnFog(Vector3 centre, Vector3 size) {
-        GameObject fog = Instantiate(fogPrefab);
-        fog.transform.position = centre;
-        fog.transform.localScale = size;
-        NetworkServer.Spawn(fog);
+        objectSpawner.SpawnObject(IObjectSpawner.SpawnType.fog, "", centre, Quaternion.identity, size);
     }
 
     Vector2 MousePos() {
         return mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
+    public void SetUpDependancies(ServiceCollection serviceCollection) {
+        objectSpawner = serviceCollection.GetService<IObjectSpawner>();
+    }
 }

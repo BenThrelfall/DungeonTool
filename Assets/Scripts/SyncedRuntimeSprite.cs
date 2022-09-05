@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// Will also sync the hash across the network so that all instances on the network will
 /// recieve the same sprite
 /// </summary>
-public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
+public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy, ISaveComp {
 
     ISpriteCollection spriteCollection;
 
@@ -22,6 +22,8 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
 
     [SerializeField]
     bool dontAutoDependancies;
+
+    public CompType ComponentType => CompType.SyncedRuntimeSprite;
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         spriteCollection = serviceCollection.GetService<ISpriteCollection>();
@@ -67,4 +69,20 @@ public class SyncedRuntimeSprite : NetworkBehaviour, IRequiresDependancy {
 
     }
 
+    public CompSaveData Save() {
+        CompSaveData output = new CompSaveData(ComponentType) {
+            Json = $"{targetHash}"
+        };
+
+        return output;
+    }
+
+    public void Load(CompSaveData data) {
+
+        dontAutoDependancies = true;
+        SetUpDependancies(DependancyInjector.instance.Services);
+
+        spriteCollection.LoadSpriteFromStorage(data.Json);
+        targetHash = data.Json;
+    }
 }

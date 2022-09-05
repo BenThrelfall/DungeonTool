@@ -95,4 +95,11 @@ public class SimpleSelectable : NetworkBehaviour, ISelectable {
         transform.localScale = newSize;
     }
 
+    public void IncreaseLight() {
+        return;
+    }
+
+    public void DecreaseLight() {
+        return;
+    }
 }

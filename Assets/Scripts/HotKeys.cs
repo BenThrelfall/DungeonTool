@@ -32,6 +32,9 @@ public class HotKeys : MonoBehaviour, IRequiresDependancy {
         if (Input.GetKeyDown(KeyCode.L)) {
             toolManager.SwitchToTool(DungTool.TerrainLine);
         }
+        if (Input.GetKeyDown(KeyCode.A)) {
+            toolManager.SwitchToTool(DungTool.AddLight);
+        }
 
     }
 

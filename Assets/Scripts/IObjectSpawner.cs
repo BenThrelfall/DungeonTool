@@ -14,7 +14,9 @@ public interface IObjectSpawner {
         token,
         playerToken,
         terrainBox,
-        map
+        map,
+        fog,
+        light
     }
 
     /// <summary>
@@ -25,5 +27,7 @@ public interface IObjectSpawner {
     public void SpawnObject(SpawnType type, string hash);
     public void SpawnObject(SpawnType type, string hask, Vector3 position);
     public void SpawnObject(SpawnType type, string hash, Vector3 position, Quaternion rotation, Vector3 scale);
+    public void SpawnFromObjectData(IEnumerable<ObjectSaveData> data);
+    public void DespawnAllSpawnedObjects();
     public void DespawnObject(GameObject gameObject);
 }

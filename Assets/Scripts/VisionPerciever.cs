@@ -1,11 +1,12 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VisionPerciever : MonoBehaviour, IRequiresDependancy {
+public class VisionPerciever : MonoBehaviour, IRequiresDependancy, ISaveComp {
 
     public int rayCount;
-    public float viewDistance;
+    [SerializeField] float viewDistance;
     public float extraAmount = 1f;
     public LayerMask visionLayerMask;
 
@@ -18,6 +19,13 @@ public class VisionPerciever : MonoBehaviour, IRequiresDependancy {
     Vector3 previousPosition;
 
     IVisionUpdateEventHandler visionEventHandler;
+
+    public CompType ComponentType => CompType.VisionPerc;
+
+    public void ChangeViewDistance(float delta) {
+        viewDistance = Mathf.Max(0, viewDistance + delta);
+        UpdateVision();
+    }
 
     private void Awake() {
         SetUpDependancies(DependancyInjector.instance.Services);
@@ -136,5 +144,15 @@ public class VisionPerciever : MonoBehaviour, IRequiresDependancy {
 
     public void SetUpDependancies(ServiceCollection serviceCollection) {
         visionEventHandler = serviceCollection.GetService<IVisionUpdateEventHandler>();
+    }
+
+    public CompSaveData Save() {
+        return new CompSaveData(ComponentType) {
+            Json = JsonConvert.SerializeObject(viewDistance)
+        };
+    }
+
+    public void Load(CompSaveData data) {
+        viewDistance = JsonConvert.DeserializeObject<float>(data.Json);
     }
 }

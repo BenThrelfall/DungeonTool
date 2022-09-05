@@ -12,7 +12,14 @@ public class UserRoleManager : NetworkBehaviour {
     RenderPipelineAsset dmRenderAsset;
 
     [SerializeField]
+    RenderPipelineAsset playerRenderAsset;
+
+    [SerializeField]
     List<GameObject> dmObjects = new List<GameObject>();
+
+    private void Start() {
+        GraphicsSettings.renderPipelineAsset = playerRenderAsset;
+    }
 
     public override void OnStartClient() {
         base.OnStartClient();

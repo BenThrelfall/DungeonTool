@@ -39,4 +39,8 @@ public interface ISelectable {
     /// <param name="newSize"></param>
     void ServerResize(Vector2 newSize);
 
+    void IncreaseLight();
+
+    void DecreaseLight();
+
 }
