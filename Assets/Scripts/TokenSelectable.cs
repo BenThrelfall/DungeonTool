@@ -148,6 +148,7 @@ public class TokenSelectable : NetworkBehaviour, ISelectable, IRequiresDependanc
 
     [Command(requiresAuthority = false)]
     void CmdChangeLightDistance(float delta) {
+        lightComp.ChangeViewDistance(delta);
         RpcChangeLightDistance(delta);
     }
 
