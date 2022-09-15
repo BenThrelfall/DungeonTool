@@ -22,32 +22,47 @@ public class TerrainLineTool : MonoBehaviour, IRequiresDependancy {
 
     [SerializeField]
     LayerMask terrainLayerMask;
+    private bool placing;
 
     public void DoPlacement() {
 
         if (Input.GetMouseButtonDown(0)) {
-            startPos = MousePos();
-            boxIndicator.SetActive(true);
+            StartCoroutine(PlacementRoutine());
         }
 
-        if (Input.GetMouseButton(0)) {
+        if (Input.GetMouseButtonDown(1) && !placing) {
+            RemoveBox();
+        }
+
+    }
+
+    IEnumerator PlacementRoutine() {
+        startPos = MousePos();
+        boxIndicator.SetActive(true);
+        placing = true;
+
+        yield return null;
+
+        while (Input.GetMouseButtonDown(1) == false) {
+
+            if (Input.GetMouseButtonDown(0)) {
+                if (boxIndicator.transform.localScale.x * boxIndicator.transform.localScale.x > minSize) {
+                    SpawnBox(boxIndicator.transform.position, boxIndicator.transform.localScale, boxIndicator.transform.rotation);
+                }
+                startPos = MousePos();
+            }
+
             diag = startPos - MousePos();
 
             boxIndicator.transform.position = startPos - diag * 0.5f;
             boxIndicator.transform.localScale = new Vector3(diag.magnitude, width, 1);
             boxIndicator.transform.right = MousePos() - startPos;
+
+            yield return null;
         }
 
-        if (Input.GetMouseButtonUp(0)) {
-            if (boxIndicator.transform.localScale.x * boxIndicator.transform.localScale.x > minSize) {
-                SpawnBox(boxIndicator.transform.position, boxIndicator.transform.localScale, boxIndicator.transform.rotation);
-            }
-            boxIndicator.SetActive(false);
-        }
-
-        if (Input.GetMouseButtonDown(1)) {
-            RemoveBox();
-        }
+        boxIndicator.SetActive(false);
+        placing = false;
 
     }
 
